@@ -12,6 +12,7 @@ import Modal from "react-bootstrap/Modal";
 import "./CreateFlow.css";
 import { ethers } from "ethers";
 import abi from "./utils/StreamFlow.json";
+// This abi is for testing purpose only. Use the StreamFlow ABI when deploying
 // import abi from "./utils/TestFlow.json";
 
 // let account;
@@ -106,10 +107,9 @@ async function updateExistingFlow(recipient, flowRate) {
 
 }
 
-
-
 export const CreateFlow = () => {
 
+  // global variables for modals
   var modal = document.getElementById("myModal");
   var modal2 = document.getElementById("myModal2")
 
@@ -131,10 +131,11 @@ export const CreateFlow = () => {
 
 
   const contractaddress = "0x9FC6B3F3666cBaF8E37948B05C4aB680Eb0988B4";
+  // Use this contract address for testing purpose only
   // const contractaddress = "0x0FE62c7A782c050Cafe8020Ce138c59657F04B48";
 
   const contractAbi = abi.abi; // use this while submitting the project.
-  // const contractAbi = abi; // this is only for testing usign remix
+  // const contractAbi = abi; // this is only for testing using remix
 
   const connectWallet = async () => {
     try {
@@ -190,6 +191,7 @@ export const CreateFlow = () => {
     checkIfWalletIsConnected();
   }, []);
 
+  // function to calculate the flowrate of the bounty
   function calculateFlowRate(amount) {
     if (typeof Number(amount) !== "number" || isNaN(Number(amount)) === true) {
       alert("You can only calculate a flowRate based on a number");

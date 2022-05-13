@@ -111,7 +111,7 @@ export const CreateFlow = () => {
 
   // global variables for modals
   var modal = document.getElementById("myModal");
-  var modal2 = document.getElementById("myModal2")
+  var modal2 = document.getElementById("myModal2");
 
 
   const [recipient, setRecipient] = useState("");

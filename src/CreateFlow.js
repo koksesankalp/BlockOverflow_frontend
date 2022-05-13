@@ -173,6 +173,13 @@ export const CreateFlow = () => {
 
     const accounts = await ethereum.request({ method: "eth_accounts" });
     const chain = await window.ethereum.request({ method: "eth_chainId" });
+    
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    provider.getBalance(accounts[0]).then((balance) => {
+      const balanceInEth = ethers.utils.formatEther(balance);
+      console.log(balanceInEth); // printing the balance of the current connected account
+    });
+    
     let chainId = chain;
     console.log("chain ID:", chain);
     console.log("global Chain Id:", chainId);
@@ -542,13 +549,13 @@ export const CreateFlow = () => {
 
   // UI code
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <div className="position-sticky">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark ps-2 pe-2">
         <span className="navbar-brand mb-0 h1">BlockOverFlow</span>
 
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className="collapse navbar-collapse position-relative" id="navbarNav">
           {currentAccount === "" ? (
-            <ul className="navbar-nav">
+            <ul className="navbar-nav position-absolute end-0">
               <li className="nav-item">
                 <button id="connectWallet" className="button btn btn-primary my-2 my-sm-0" onClick={connectWallet}>
                   Connect Wallet
@@ -556,15 +563,14 @@ export const CreateFlow = () => {
               </li>
             </ul>
           ) : (
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Card className="connectedWallet">
-                  {`${currentAccount.substring(0, 4)}...${currentAccount.substring(
-                    38
-                  )}`}
-                </Card>
-              </li>
-            </ul>
+            <div className="d-flex position-absolute end-0">
+              <Card className="connectedWallet">
+                {`${currentAccount.substring(0, 8)}...${currentAccount.substring(
+                  38
+                )}`}
+              </Card>
+            </div>
+
           )}
         </div>
 
@@ -579,7 +585,7 @@ export const CreateFlow = () => {
       </div> */}
 
         <Form>
-          <FormGroup class="mb-3">
+          <FormGroup className="mb-3">
             <p>Enter the Doubt Heading</p>
             <FormControl
               name="doubt_heading"
@@ -588,7 +594,7 @@ export const CreateFlow = () => {
               placeholder="Enter the doubt heading"
             ></FormControl>
           </FormGroup>
-          <FormGroup class="mb-3">
+          <FormGroup className="mb-3">
             <p>Enter the Dount description</p>
             <FormControl
               name="doubt_description"
@@ -597,7 +603,7 @@ export const CreateFlow = () => {
               placeholder="Enter the doubt description"
             ></FormControl>
           </FormGroup>
-          <FormGroup class="mb-3">
+          <FormGroup className="mb-3">
             <p>Enter the due days until the bounty is valid</p>
             <FormControl
               name="doubt_due"

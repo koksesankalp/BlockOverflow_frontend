@@ -5,7 +5,7 @@ import {
   Form,
   FormGroup,
   FormControl,
-  Spinner, 
+  Spinner,
   Card
 } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -461,6 +461,7 @@ export const CreateFlow = () => {
     }
   }
 
+  // function to get a flow from a user account to the super contract
   const getAFlow = async () => {
     const { ethereum } = window;
     try {
@@ -489,6 +490,7 @@ export const CreateFlow = () => {
     }
   }
 
+  // function to Upvote an answer
   async function upvoteCurrentAnswer(ansId) {
     console.log(currentDoubtAnsweringId);
     const { ethereum } = window;
@@ -516,30 +518,24 @@ export const CreateFlow = () => {
     }
   }
 
-
-  const showModal = () => {
-    setIsOpen(true);
-  };
-  const hideModal = () => {
-    setIsOpen(false);
-  };
-
+  // open the modal 1
   async function openModal(quesId) {
     setCurrentDoubtAnsweringId(quesId);
     await getAnswer(quesId);
     modal.style.display = "block";
   }
+  // close the modal 1
+  function closeModal() {
+    modal.style.display = "none";
+  }
 
+  // open the modal 2
   async function openModal2(quesId) {
     setCurrentDoubtAnsweringId(quesId);
     console.log(currentDoubtAnsweringId);
     modal2.style.display = "block";
   }
-
-  function closeModal() {
-    modal.style.display = "none";
-  }
-
+  // close the modal 2
   function closeModal2() {
     modal2.style.display = "none";
   }
@@ -547,174 +543,186 @@ export const CreateFlow = () => {
   // UI code
   return (
     <div>
-      <h2>BlockOverFlow</h2>
-      {currentAccount === "" ? (
-        <button id="connectWallet" className="button" onClick={connectWallet}>
-          Connect Wallet
-        </button>
-      ) : (
-        <Card className="connectedWallet">
-          {`${currentAccount.substring(0, 4)}...${currentAccount.substring(
-            38
-          )}`}
-        </Card>
-      )}
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <span className="navbar-brand mb-0 h1">BlockOverFlow</span>
 
+        <div className="collapse navbar-collapse" id="navbarNav">
+          {currentAccount === "" ? (
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <button id="connectWallet" className="button btn btn-primary my-2 my-sm-0" onClick={connectWallet}>
+                  Connect Wallet
+                </button>
+              </li>
+            </ul>
+          ) : (
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <Card className="connectedWallet">
+                  {`${currentAccount.substring(0, 4)}...${currentAccount.substring(
+                    38
+                  )}`}
+                </Card>
+              </li>
+            </ul>
+          )}
+        </div>
 
-
-      {/* <div className="button">
+      </nav>
+      <div className="container">
+        {/* <div className="button">
         <button onClick={getCurrentReceiver}>Get current Receiver</button>
       </div> */}
 
-      {/* <div className="button">
+        {/* <div className="button">
         <button onClick={getAFlow}>Get A Flow</button>
       </div> */}
 
-      <Form>
-        <FormGroup class="mb-3">
-          <p>Enter the Doubt Heading</p>
-          <FormControl
-            name="doubt_heading"
-            value={doubt_heading}
-            onChange={handleDoubtHeading}
-            placeholder="Enter the doubt heading"
-          ></FormControl>
-        </FormGroup>
-        <FormGroup class="mb-3">
-          <p>Enter the Dount description</p>
-          <FormControl
-            name="doubt_description"
-            value={doubt_description}
-            onChange={handleDoubtDescription}
-            placeholder="Enter the doubt description"
-          ></FormControl>
-        </FormGroup>
-        <FormGroup class="mb-3">
-          <p>Enter the due days until the bounty is valid</p>
-          <FormControl
-            name="doubt_due"
-            value={doubt_due}
-            onChange={handleDoubtDue}
-            placeholder="Enter the doubt due days"
-          ></FormControl>
-        </FormGroup>
+        <Form>
+          <FormGroup class="mb-3">
+            <p>Enter the Doubt Heading</p>
+            <FormControl
+              name="doubt_heading"
+              value={doubt_heading}
+              onChange={handleDoubtHeading}
+              placeholder="Enter the doubt heading"
+            ></FormControl>
+          </FormGroup>
+          <FormGroup class="mb-3">
+            <p>Enter the Dount description</p>
+            <FormControl
+              name="doubt_description"
+              value={doubt_description}
+              onChange={handleDoubtDescription}
+              placeholder="Enter the doubt description"
+            ></FormControl>
+          </FormGroup>
+          <FormGroup class="mb-3">
+            <p>Enter the due days until the bounty is valid</p>
+            <FormControl
+              name="doubt_due"
+              value={doubt_due}
+              onChange={handleDoubtDue}
+              placeholder="Enter the doubt due days"
+            ></FormControl>
+          </FormGroup>
 
-        {/* displaying flowRate */}
-        <FormGroup className="mb-3">
-          <p>Enter the bounty of your doubt (optional)</p>
-          <FormControl
-            name="flowRate"
-            value={flowRate}
-            onChange={handleFlowRateChange}
-            placeholder="Enter a bounty amount in wei/second"
-          ></FormControl>
-        </FormGroup>
+          {/* displaying flowRate */}
+          <FormGroup className="mb-3">
+            <p>Enter the bounty of your doubt (optional)</p>
+            <FormControl
+              name="flowRate"
+              value={flowRate}
+              onChange={handleFlowRateChange}
+              placeholder="Enter a bounty amount in wei/second"
+            ></FormControl>
+          </FormGroup>
 
-        <div className="description">
-          <div className="calculation">
-            <p>Bounty flow Rate with Superfluid</p>
-            <p>
-              <b>${flowRateDisplay !== " " ? flowRateDisplay : 0}</b> DAIx/month<br></br>
-              <b>${doubtFlowRateDisplay !== " " ? doubtFlowRateDisplay : 0}</b> DAIx/{doubt_due} day(s)
-            </p>
+          <div className="description">
+            <div className="calculation">
+              <p>Bounty flow Rate with Superfluid</p>
+              <p>
+                <b>${flowRateDisplay !== " " ? flowRateDisplay : 0}</b> DAIx/month<br></br>
+                <b>${doubtFlowRateDisplay !== " " ? doubtFlowRateDisplay : 0}</b> DAIx/{doubt_due} day(s)
+              </p>
+            </div>
           </div>
-        </div>
 
-        <CreateButton
-          onClick={() => {
-            setIsButtonLoading(true);
-            postADoubt();
-            setTimeout(() => {
-              setIsButtonLoading(false);
-            }, 1000);
-          }}
-        >
-          Post doubt
-        </CreateButton>
-      </Form>
+          <CreateButton
+            onClick={() => {
+              setIsButtonLoading(true);
+              postADoubt();
+              setTimeout(() => {
+                setIsButtonLoading(false);
+              }, 1000);
+            }}
+          >
+            Post doubt
+          </CreateButton>
+        </Form>
 
-      {/* <div className="button">
+        {/* <div className="button">
         <button onClick={getDoubt}>Get the first doubt</button>
       </div> */}
 
-      <div className="answer">
-        <button onClick={getAnswer}>Get the answer of first doubt</button>
-      </div>
-
-
-      {/* making modal */}
-
-      {allDoubts.map((doubt, index) => {
-        return (
-          <div className="card" key={index}>
-            <div className="container">
-              {/* <h3>Address: {doubt.address}</h3> */}
-              <h3><b>Heading: {doubt.heading}</b></h3>
-              <p>Description: {doubt.description}</p>
-              <p>Ques_ID: {doubt.quesId.toString()}</p>
-
-              <button id="modalButton" onClick={() => openModal(doubt.quesId)}>Show Answers</button>
-              <button id="modalButton2" onClick={() => openModal2(doubt.quesId)}>Answer Question</button>
-            </div>
-          </div>
-        )
-      })}
-
-      {/* for answers */}
-      <div id="myModal" className="modal">
-        <div className="modal-content">
-          <h3>Answers</h3>
-          <span onClick={closeModal} id="closeSpanButton" className="close">&times;</span>
-
-          {allAnswers.map((answer, index) => {
-            return (
-              <div key={index}>
-                <span className="totalUpvotes">{answer.upvotes}</span>&nbsp;
-                <button onClick={() => { upvoteCurrentAnswer(answer.ansId) }} className="upvoteArrow">&#8679;</button>
-                &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                <span className="answerBody">Answer {answer.ansId}:- {answer.answerbody}</span>
-                <hr></hr>
-                <br></br>
-              </div>
-            )
-          })}
+        <div className="answer">
+          <button onClick={getAnswer}>Get the answer of first doubt</button>
         </div>
-      </div>
 
-      {/* Posting answers */}
-      <div id="myModal2" className="modal2">
-        <div className="modal-content">
-          <span onClick={closeModal2} id="closeSpanButton" className="close">&times;</span>
-          <h3>Type your answer</h3>
-          <Form>
-            <FormGroup className="mb-3">
-              <FormControl
-                name="answerBody"
-                value={answerBody}
-                onChange={handleAnswers}
-                placeholder="Enter the answer for this doubt"
-              ></FormControl>
-              {/* <FormControl
+
+        {/* making modal */}
+
+        {allDoubts.map((doubt, index) => {
+          return (
+            <div className="card" key={index}>
+              <div className="container">
+                {/* <h3>Address: {doubt.address}</h3> */}
+                <h3><b>Heading: {doubt.heading}</b></h3>
+                <p>Description: {doubt.description}</p>
+                <p>Ques_ID: {doubt.quesId.toString()}</p>
+
+                <button id="modalButton" onClick={() => openModal(doubt.quesId)}>Show Answers</button>
+                <button id="modalButton2" onClick={() => openModal2(doubt.quesId)}>Answer Question</button>
+              </div>
+            </div>
+          )
+        })}
+
+        {/* for answers */}
+        <div id="myModal" className="modal">
+          <div className="modal-content">
+            <h3>Answers</h3>
+            <span onClick={closeModal} id="closeSpanButton" className="close">&times;</span>
+
+            {allAnswers.map((answer, index) => {
+              return (
+                <div key={index}>
+                  <span className="totalUpvotes">{answer.upvotes}</span>&nbsp;
+                  <button onClick={() => { upvoteCurrentAnswer(answer.ansId) }} className="upvoteArrow">&#8679;</button>
+                  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                  <span className="answerBody">Answer {answer.ansId}:- {answer.answerbody}</span>
+                  <hr></hr>
+                  <br></br>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Posting answers */}
+        <div id="myModal2" className="modal2">
+          <div className="modal-content">
+            <span onClick={closeModal2} id="closeSpanButton" className="close">&times;</span>
+            <h3>Type your answer</h3>
+            <Form>
+              <FormGroup className="mb-3">
+                <FormControl
+                  name="answerBody"
+                  value={answerBody}
+                  onChange={handleAnswers}
+                  placeholder="Enter the answer for this doubt"
+                ></FormControl>
+                {/* <FormControl
                 name="doubt_due"
                 value={doubt_due}
                 onChange={handleDoubtDue}
                 placeholder="Enter the doubt number which you want to answer"></FormControl> */}
-            </FormGroup>
-            <CreateButton
-              onClick={() => {
-                setIsButtonLoading(true);
-                postAnswer();
-                setTimeout(() => {
-                  setIsButtonLoading(false);
-                }, 1000);
-              }}
-            >
-              Post an Answer
-            </CreateButton>
-          </Form>
+              </FormGroup>
+              <CreateButton
+                onClick={() => {
+                  setIsButtonLoading(true);
+                  postAnswer();
+                  setTimeout(() => {
+                    setIsButtonLoading(false);
+                  }, 1000);
+                }}
+              >
+                Post an Answer
+              </CreateButton>
+            </Form>
+          </div>
         </div>
       </div>
-
     </div>
   );
 };

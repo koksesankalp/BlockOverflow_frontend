@@ -8,6 +8,8 @@ import {
   Spinner, 
   Card
 } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Modal from "react-bootstrap/Modal";
 import "./CreateFlow.css";
 import { ethers } from "ethers";
@@ -641,48 +643,6 @@ export const CreateFlow = () => {
 
 
       {/* making modal */}
-
-      <button onClick={showModal}>Display Modal</button>
-
-      <Modal show={isOpen} onHide={hideModal}>
-        <Modal.Header>
-          <Modal.Title>Modal title</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <p>Modal body text goes here.</p>
-          <Form>
-            <FormGroup className="mb-3">
-              <FormControl
-                name="answerBody"
-                value={answerBody}
-                onChange={handleAnswers}
-                placeholder="Enter the answer for this doubt"
-              ></FormControl>
-              <FormControl
-                name="doubt_due"
-                value={doubt_due}
-                onChange={handleDoubtDue}
-                placeholder="Enter the doubt number which you want to answer"></FormControl>
-            </FormGroup>
-          </Form>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <button onClick={hideModal}>Cancle</button>
-          <CreateButton
-            onClick={() => {
-              setIsButtonLoading(true);
-              postAnswer();
-              setTimeout(() => {
-                setIsButtonLoading(false);
-              }, 1000);
-            }}
-          >
-            Post an Answer
-          </CreateButton>
-        </Modal.Footer>
-      </Modal>
 
       {allDoubts.map((doubt, index) => {
         return (

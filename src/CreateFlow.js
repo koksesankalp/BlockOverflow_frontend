@@ -665,6 +665,7 @@ export const CreateFlow = () => {
 
         {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {
+          let accordian_btn = "";
           return (
             <div className="card" key={index}>
               <div className="container">
@@ -677,15 +678,17 @@ export const CreateFlow = () => {
                 <button id="modalButton2" onClick={() => openModal2(doubt.quesId)}>Answer Question</button>
               </div>
 
-              <div class="accordion accordion-flush" id="accordionFlushExample">
-                <div class="accordion-item" onClick={() => openAccordion(doubt.quesId)}>
-                  <h2 class="accordion-header" id="flush-headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                      View Answers
+              <div className="accordion accordion-flush" id="accordionFlushExample">
+                <div className="accordion-item" onClick={() => openAccordion(doubt.quesId)}>
+                  <h2 className="accordion-header" id="flush-headingOne">
+                    {/* facing issue here about giving unique id to each accordion to each question. */}
+                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="{{'#' + {doubt.quesId.toString()} }}" aria-expanded="false" aria-controls={doubt.quesId.toString()}>
+                      View Answers {doubt.quesId}
                     </button>
                   </h2>
-                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">
+                  {/* facing issue here about giving unique id to each accordion to each question. */}
+                  <div id={doubt.quesId.toString()} className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <div className="accordion-body">
                       {allAnswers.map((answer, index) => {
                         return (
                           <div key={index}>

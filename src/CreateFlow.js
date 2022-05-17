@@ -9,8 +9,6 @@ import {
   Card
 } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import Modal from "react-bootstrap/Modal";
 import "./CreateFlow.css";
 import { ethers } from "ethers";
 import abi from "./utils/StreamFlow.json";
@@ -66,6 +64,7 @@ async function createNewFlow(recipient, flowRate) {
   }
 }
 
+// currently the function call is commented
 async function updateExistingFlow(recipient, flowRate) {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
@@ -110,11 +109,6 @@ async function updateExistingFlow(recipient, flowRate) {
 }
 
 export const CreateFlow = () => {
-
-  // global variables for modals
-  var modal = document.getElementById("myModal");
-  var modal2 = document.getElementById("myModal2");
-
 
   const [recipient, setRecipient] = useState("");
   const [isButtonLoading, setIsButtonLoading] = useState(false);
@@ -224,6 +218,7 @@ export const CreateFlow = () => {
     );
   }
 
+  // currently no function call; Will remove if not required
   const handleRecipientChange = (e) => {
     setRecipient(() => ([e.target.name] = e.target.value));
     console.log(setRecipient);
@@ -253,6 +248,7 @@ export const CreateFlow = () => {
     setAnswerBody(() => ([e.target.name] = e.target.value));
   }
 
+  // function call is commented; will remove if not required
   const getCurrentReceiver = async () => {
     const { ethereum } = window;
     if (ethereum) {
@@ -525,6 +521,11 @@ export const CreateFlow = () => {
     }
   }
 
+  ////////////////////////////////////// Modal functions ///////////////////////////////////////////
+  // global variables for modals
+  var modal = document.getElementById("myModal");
+  var modal2 = document.getElementById("myModal2");
+
   // open the modal 1
   async function openModal(quesId) {
     setCurrentDoubtAnsweringId(quesId);
@@ -656,8 +657,7 @@ export const CreateFlow = () => {
         </div>
 
 
-        {/* making modal */}
-
+        {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {
           return (
             <div className="card" key={index}>
@@ -674,7 +674,7 @@ export const CreateFlow = () => {
           )
         })}
 
-        {/* for answers */}
+        {/* Modal 1 for displaying answers */}
         <div id="myModal" className="modal">
           <div className="modal-content">
             <h3>Answers</h3>
@@ -695,7 +695,7 @@ export const CreateFlow = () => {
           </div>
         </div>
 
-        {/* Posting answers */}
+        {/* Modal2 for Posting answers */}
         <div id="myModal2" className="modal2">
           <div className="modal-content">
             <span onClick={closeModal2} id="closeSpanButton" className="close">&times;</span>
@@ -708,11 +708,6 @@ export const CreateFlow = () => {
                   onChange={handleAnswers}
                   placeholder="Enter the answer for this doubt"
                 ></FormControl>
-                {/* <FormControl
-                name="doubt_due"
-                value={doubt_due}
-                onChange={handleDoubtDue}
-                placeholder="Enter the doubt number which you want to answer"></FormControl> */}
               </FormGroup>
               <CreateButton
                 onClick={() => {

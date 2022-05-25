@@ -72,7 +72,7 @@ async function updateExistingFlow(recipient, flowRate) {
 
 }
 
-export const TestFlow = () => {
+export const CreateFlow = () => {
 
   //Main Function of this component -> Connect to the wallet, Retreive all the imp stuff import all components
 

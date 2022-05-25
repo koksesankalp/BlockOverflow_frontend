@@ -119,7 +119,7 @@ const DoubtInput = (props) => {
             await doubtTxn.wait();
             console.log("Mined -- ", doubtTxn.hash); // doubt posted
             await props.getDoubt();
-            let currentFlowRate = await props.getAFlow();
+            let currentFlowRate = await getAFlow();
             console.log(currentFlowRate);
             // const transactionExist = await streamFlowContract.checkFlow(currentAccount);
             if (flowRate > 0) {

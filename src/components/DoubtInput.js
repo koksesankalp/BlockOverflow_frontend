@@ -1,10 +1,5 @@
-/*What anol we actually need props for -> Button loading, CreateButton, getDoubt, contractABI,  currentAccount
-
-STATE RECVIEW:
-
-Pure States:
-
-
+/*What anol we actually need props for -> 
+Button loading, CreateButton, getDoubt, contractABI,  currentAccount
 */
 
 import { Framework } from "@superfluid-finance/sdk-core";
@@ -25,7 +20,7 @@ const DoubtInput = (props) => {
     const [doubt_heading, setDoubtHeading] = useState("");
     const [doubt_description, setDoubtDescription] = useState("");
     const [doubt_due, setDoubtDue] = useState(0);
-    
+
     const [flowRate, setFlowRate] = useState("");
     const [flowRateDisplay, setFlowRateDisplay] = useState("");
     const [doubtFlowRateDisplay, setDoubtFlowRateDisplay] = useState("");

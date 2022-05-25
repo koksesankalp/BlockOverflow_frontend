@@ -146,6 +146,11 @@ export const CreateFlow = () => {
         method: "eth_requestAccounts"
       });
       console.log("Connected", accounts[0]);
+      const chainId = await window.ethereum.request({ method: "eth_chainId" });
+      if(chainId !== "0x4"){
+        alert("Please Switch the network to rinkeby")
+      }
+      console.log(chainId);
       setCurrentAccount(accounts[0]);
       // let account = currentAccount;
       // Setup listener! This is for the case where a user comes to our site
@@ -178,6 +183,9 @@ export const CreateFlow = () => {
     let chainId = chain;
     console.log("chain ID:", chain);
     console.log("global Chain Id:", chainId);
+    if(chainId !== "0x4"){
+      alert("Please Switch the network to rinkeby")
+    }
     if (accounts.length !== 0) {
       const account = accounts[0];
       console.log("Found an authorized account:", account);

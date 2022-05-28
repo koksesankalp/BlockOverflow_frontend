@@ -369,11 +369,6 @@ export const CreateFlow = () => {
   var modal = document.getElementById("myModal");
   var modal2 = document.getElementById("myModal2");
 
-  async function openAccordion(quesId) {
-    setCurrentDoubtAnsweringId(quesId);
-    await getAnswer(quesId);
-  }
-
   // open the modal 1
   async function openModal(quesId) {
     setCurrentDoubtAnsweringId(quesId);
@@ -412,21 +407,8 @@ export const CreateFlow = () => {
 
         < DoubtInput getDoubt = {getDoubt}  contractAbi = {contractAbi}   CreateButton = {CreateButton}  setIsButtonLoading  = {setIsButtonLoading} currentAccount = {currentAccount} />
 
-
-        {/* <div className="button">
-        <button onClick={getDoubt}>Get the first doubt</button>
-      </div> */}
-
-        <div className="answer">
-          <button onClick={getAnswer}>Get the answer of first doubt</button>
-        </div>
-
-
         {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {
-          let accordian_btn = "";
-          let accordian_index = "#flush-collapse" + index.toString();
-          let accordian_id = "flush-collapse" + index.toString();
           return (
             <div className="card" key={index}>
               <div className="container">
@@ -434,37 +416,8 @@ export const CreateFlow = () => {
                 <h3><b>Heading: {doubt.heading}</b></h3>
                 <p>Description: {doubt.description}</p>
                 <p>Ques_ID: {doubt.quesId.toString()}</p>
-
                 <button id="modalButton" onClick={() => openModal(doubt.quesId)}>Show Answers</button>
                 <button id="modalButton2" onClick={() => openModal2(doubt.quesId)}>Answer Question</button>
-              </div>
-
-              <div className="accordion accordion-flush" id="accordionFlushExample">
-                <div className="accordion-item" onClick={() => openAccordion(doubt.quesId)}>
-                  <h2 className="accordion-header" id="flush-headingOne">
-                    {/* facing issue here about giving unique id to each accordion to each question. */}
-                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={accordian_index} aria-expanded="false" aria-controls={accordian_index}>
-                      View Answers {doubt.quesId}
-                    </button>
-                  </h2>
-                  {/* facing issue here about giving unique id to each accordion to each question. */}
-                  <div id={accordian_id} className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                    <div className="accordion-body">
-                      {allAnswers.map((answer, index) => {
-                        return (
-                          <div key={index}>
-                            <span className="totalUpvotes">{answer.upvotes}</span>&nbsp;
-                            <button onClick={() => { upvoteCurrentAnswer(answer.ansId) }} className="upvoteArrow">&#8679;</button>
-                            &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                            <span className="answerBody">Answer {answer.ansId}:- {answer.answerbody}</span>
-                            <hr></hr>
-                            <br></br>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           )

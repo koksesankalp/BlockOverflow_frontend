@@ -109,7 +109,7 @@ export const CreateFlow = () => {
       });
       console.log("Connected", accounts[0]);
       const chainId = await window.ethereum.request({ method: "eth_chainId" });
-      if(chainId !== "0x4"){
+      if (chainId !== "0x4") {
         alert("Please Switch the network to rinkeby")
       }
       console.log(chainId);
@@ -145,7 +145,7 @@ export const CreateFlow = () => {
     let chainId = chain;
     console.log("chain ID:", chain);
     console.log("global Chain Id:", chainId);
-    if(chainId !== "0x4"){
+    if (chainId !== "0x4") {
       alert("Please Switch the network to rinkeby")
     }
     if (accounts.length !== 0) {
@@ -395,7 +395,7 @@ export const CreateFlow = () => {
   return (
 
     <div className="position-sticky">
-      <Header connectWallet = {connectWallet} Card = {Card}  currentAccount = {currentAccount} />
+      <Header connectWallet={connectWallet} Card={Card} currentAccount={currentAccount} />
       <div className="container">
         {/* <div className="button">
         <button onClick={getCurrentReceiver}>Get current Receiver</button>
@@ -405,7 +405,7 @@ export const CreateFlow = () => {
         <button onClick={getAFlow}>Get A Flow</button>
       </div> */}
 
-        < DoubtInput getDoubt = {getDoubt}  contractAbi = {contractAbi}   CreateButton = {CreateButton}  setIsButtonLoading  = {setIsButtonLoading} currentAccount = {currentAccount} />
+        < DoubtInput getDoubt={getDoubt} contractAbi={contractAbi} CreateButton={CreateButton} setIsButtonLoading={setIsButtonLoading} currentAccount={currentAccount} />
 
         {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {
@@ -425,7 +425,7 @@ export const CreateFlow = () => {
 
         {/* Modal 1 for displaying answers; convert it to accordian */}
 
-        <div id="myModal" className="modal">
+        <div id="myModal" className="modal1">
           <div className="modal-content">
             <h3>Answers</h3>
             <span onClick={closeModal} id="closeSpanButton" className="close">&times;</span>

@@ -18,11 +18,7 @@
 div.fade.model.show {
   display: contents;
 }
-.modal-dialog {
-  border-color: blue;
-  padding: 7%;
-  text-align: center;
-}
+
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
@@ -33,7 +29,7 @@ div.fade.model.show {
 .container {
   padding: 2px 16px;
 }
-.modal, .modal2 {
+.modal1, .modal2 {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */

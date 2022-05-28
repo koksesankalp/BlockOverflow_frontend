@@ -72,6 +72,9 @@ async function updateExistingFlow(recipient, flowRate) {
 
 }
 
+
+
+// exporting component
 export const CreateFlow = () => {
 
   //Main Function of this component -> Connect to the wallet, Retreive all the imp stuff import all components
@@ -422,6 +425,8 @@ export const CreateFlow = () => {
         {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {
           let accordian_btn = "";
+          let accordian_index = "#flush-collapse" + index.toString();
+          let accordian_id = "flush-collapse" + index.toString();
           return (
             <div className="card" key={index}>
               <div className="container">
@@ -438,12 +443,12 @@ export const CreateFlow = () => {
                 <div className="accordion-item" onClick={() => openAccordion(doubt.quesId)}>
                   <h2 className="accordion-header" id="flush-headingOne">
                     {/* facing issue here about giving unique id to each accordion to each question. */}
-                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="{{'#' + {doubt.quesId.toString()} }}" aria-expanded="false" aria-controls={doubt.quesId.toString()}>
+                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={accordian_index} aria-expanded="false" aria-controls={accordian_index}>
                       View Answers {doubt.quesId}
                     </button>
                   </h2>
                   {/* facing issue here about giving unique id to each accordion to each question. */}
-                  <div id={doubt.quesId.toString()} className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                  <div id={accordian_id} className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                     <div className="accordion-body">
                       {allAnswers.map((answer, index) => {
                         return (

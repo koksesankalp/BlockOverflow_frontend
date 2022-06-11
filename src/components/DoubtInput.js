@@ -13,10 +13,11 @@ import {
   FormGroup,
   FormControl,
   Modal,
-  Button
+  Button,
+  Spinner
 } from "react-bootstrap";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { ethers } from "ethers";
 
 const DoubtInput = (props) => {
@@ -194,7 +195,7 @@ const DoubtInput = (props) => {
 
     <>
       <Button variant="primary" onClick={handleShow}>
-        Launch Doubt Modal
+        Post your Doubt
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -213,7 +214,7 @@ const DoubtInput = (props) => {
               ></FormControl>
             </FormGroup>
             <FormGroup className="mb-3">
-              <p>Enter the Dount description</p>
+              <p>Enter the Doubt description</p>
               <FormControl
                 name="doubt_description"
                 value={doubt_description}
@@ -251,8 +252,10 @@ const DoubtInput = (props) => {
                 </p>
               </div>
             </div>
-
-            <props.CreateButton
+            <br></br>
+            <Button
+              variant="success"
+              className="button"
               onClick={() => {
                 props.setIsButtonLoading(true);
                 postADoubt();
@@ -261,18 +264,10 @@ const DoubtInput = (props) => {
                 }, 1000);
               }}
             >
-              Post doubt
-            </props.CreateButton>
+              Post
+            </Button>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   )

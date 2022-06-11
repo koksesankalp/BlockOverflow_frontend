@@ -165,22 +165,10 @@ export const CreateFlow = () => {
     checkIfWalletIsConnected();
   }, []);
 
-
-
-  function CreateButton({ isLoading, children, ...props }) {
-    return (
-      <Button variant="success" className="button" {...props}>
-        {isButtonLoading ? <Spinner animation="border" /> : children}
-      </Button>
-    );
-  }
-
-
   // for answers
   const handleAnswers = (e) => {
     setAnswerBody(() => ([e.target.name] = e.target.value));
   }
-
 
   // Get all the doubts
   const getDoubt = async () => {
@@ -405,7 +393,7 @@ export const CreateFlow = () => {
         <button onClick={getAFlow}>Get A Flow</button>
       </div> */}
 
-        < DoubtInput getDoubt={getDoubt} contractAbi={contractAbi} CreateButton={CreateButton} setIsButtonLoading={setIsButtonLoading} currentAccount={currentAccount} />
+        < DoubtInput getDoubt={getDoubt} contractAbi={contractAbi} setIsButtonLoading={setIsButtonLoading} currentAccount={currentAccount} />
 
         {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {
@@ -459,7 +447,7 @@ export const CreateFlow = () => {
                   placeholder="Enter the answer for this doubt"
                 ></FormControl>
               </FormGroup>
-              <CreateButton
+              {/* <CreateButton
                 onClick={() => {
                   setIsButtonLoading(true);
                   postAnswer();
@@ -469,7 +457,7 @@ export const CreateFlow = () => {
                 }}
               >
                 Post an Answer
-              </CreateButton>
+              </CreateButton> */}
             </Form>
           </div>
         </div>

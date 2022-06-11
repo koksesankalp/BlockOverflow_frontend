@@ -5,8 +5,8 @@ import {
   Form,
   FormGroup,
   FormControl,
-  Spinner,
-  Card
+  Card,
+  Modal
 } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
@@ -21,12 +21,9 @@ import DoubtInput from "./components/DoubtInput";
 
 // This abi is for testing purpose only. Use the StreamFlow ABI when deploying
 // import abi from "./utils/TestFlow.json";
-
 // let account;
 
-
 //where the Superfluid logic takes place
-
 
 // currently the function call is commented
 async function updateExistingFlow(recipient, flowRate) {
@@ -37,9 +34,7 @@ async function updateExistingFlow(recipient, flowRate) {
     chainId: Number(chainId),
     provider: provider
   });
-
   const DAIx = "0x745861AeD1EEe363b4AaA5F1994Be40b1e05Ff90";
-
   try {
     const updateFlowOperation = sf.cfaV1.updateFlow({
       receiver: recipient,
@@ -76,30 +71,41 @@ async function updateExistingFlow(recipient, flowRate) {
 
 // exporting component
 export const CreateFlow = () => {
-
   //Main Function of this component -> Connect to the wallet, Retreive all the imp stuff import all components
-
   //States
-  const [recipient, setRecipient] = useState("");
   const [isButtonLoading, setIsButtonLoading] = useState(false);
-  const [currentAccount, setCurrentAccount] = useState("");
-  const [allDoubts, setAllDoubts] = useState([]);
-  const [isOpen, setIsOpen] = useState(false); // for the modal
-  const [answerBody, setAnswerBody] = useState("");
-  const [allAnswers, setAllAnswers] = useState([]);
-  const [currentDoubtAnsweringId, setCurrentDoubtAnsweringId] = useState(0);
+  const [currentAccount, setCurrentAccount] = useState(""); // current logged in account address
+  const [allDoubts, setAllDoubts] = useState([]); // set an array of all doubts
+  const [answerBody, setAnswerBody] = useState(""); // track the answer body while typing an answer to submit
+  const [allAnswers, setAllAnswers] = useState([]); // set an array of all answers
+  const [currentDoubtId, setCurrentDoubtId] = useState(0); // storing the current access doubt ID for further functions
+
+  // for the Modals
+  const [showAnswerModal, setShowAnswerModal] = useState(false);
+  const [showAnswerForm, setShowAnswerForm] = useState(false);
+
+  const handleClose1 = () => setShowAnswerModal(false);
+  const handleShow1 = async (quesId) => {
+    setCurrentDoubtId(quesId);
+    await getAnswer(quesId);
+    setShowAnswerModal(true);
+  };
+  const handleClose2 = () => setShowAnswerForm(false);
+  const handleShow2 = async (quesId) => {
+    setCurrentDoubtId(quesId);
+    setShowAnswerForm(true);
+  };
 
   const contractaddress = "0x9FC6B3F3666cBaF8E37948B05C4aB680Eb0988B4";
   // Use this contract address for testing purpose only
   // const contractaddress = "0x0FE62c7A782c050Cafe8020Ce138c59657F04B48";
-
   const contractAbi = abi.abi; // use this while submitting the project.
   // const contractAbi = abi; // this is only for testing using remix
 
+  // Function to connect the wallet.
   const connectWallet = async () => {
     try {
       const { ethereum } = window;
-
       if (!ethereum) {
         alert("Get MetaMask!");
         return;
@@ -123,19 +129,17 @@ export const CreateFlow = () => {
     }
   };
 
+  // function to check if wallet is connected or not
   const checkIfWalletIsConnected = async () => {
     const { ethereum } = window;
-
     if (!ethereum) {
       console.log("Make sure you have metamask!");
       return;
     } else {
       console.log("We have the ethereum object", ethereum);
     }
-
     const accounts = await ethereum.request({ method: "eth_accounts" });
     const chain = await window.ethereum.request({ method: "eth_chainId" });
-
     const provider = new ethers.providers.Web3Provider(ethereum);
     provider.getBalance(accounts[0]).then((balance) => {
       const balanceInEth = ethers.utils.formatEther(balance);
@@ -193,8 +197,6 @@ export const CreateFlow = () => {
         });
         setAllDoubts(postedDoubtsCleaned);
         console.log(postedDoubtsCleaned);
-        // console.log(allDoubts);
-
       } else {
         console.log("No Ethereum object found");
       }
@@ -204,6 +206,7 @@ export const CreateFlow = () => {
     }
   }
 
+  // function to get answer for a specific doubt
   async function getAnswer(qId) {
     console.log("getAnswer called with id ", qId);
     const { ethereum } = window;
@@ -295,8 +298,6 @@ export const CreateFlow = () => {
     };
   }, [allDoubts, contractAbi]);
 
-
-
   const postAnswer = async () => {
     const { ethereum } = window;
     try {
@@ -310,7 +311,7 @@ export const CreateFlow = () => {
         );
         const answerTxn = await streamFlowContract.answerDoubt(
           answerBody,
-          currentDoubtAnsweringId,
+          currentDoubtId,
         );
         console.log("Mining...", answerTxn.hash);
         await answerTxn.wait();
@@ -323,10 +324,9 @@ export const CreateFlow = () => {
     }
   }
 
-
   // function to Upvote an answer
   async function upvoteCurrentAnswer(ansId) {
-    console.log(currentDoubtAnsweringId);
+    console.log(currentDoubtId);
     const { ethereum } = window;
     try {
       if (ethereum) {
@@ -338,7 +338,7 @@ export const CreateFlow = () => {
           signer
         );
         const upvoteTxn = await streamFlowContract.upVote(
-          currentDoubtAnsweringId,
+          currentDoubtId,
           ansId,
         );
         console.log("Mining...", upvoteTxn.hash);
@@ -352,47 +352,12 @@ export const CreateFlow = () => {
     }
   }
 
-  ////////////////////////////////////// Modal functions ///////////////////////////////////////////
-  // global variables for modals
-  var modal = document.getElementById("myModal");
-  var modal2 = document.getElementById("myModal2");
-
-  // open the modal 1
-  async function openModal(quesId) {
-    setCurrentDoubtAnsweringId(quesId);
-    await getAnswer(quesId);
-    modal.style.display = "block";
-  }
-  // close the modal 1
-  function closeModal() {
-    modal.style.display = "none";
-  }
-
-  // open the modal 2
-  async function openModal2(quesId) {
-    setCurrentDoubtAnsweringId(quesId);
-    console.log(currentDoubtAnsweringId);
-    modal2.style.display = "block";
-  }
-  // close the modal 2
-  function closeModal2() {
-    modal2.style.display = "none";
-  }
-
   // UI code
   return (
 
     <div className="position-sticky">
       <Header connectWallet={connectWallet} Card={Card} currentAccount={currentAccount} />
       <div className="container">
-        {/* <div className="button">
-        <button onClick={getCurrentReceiver}>Get current Receiver</button>
-      </div> */}
-
-        {/* <div className="button">
-        <button onClick={getAFlow}>Get A Flow</button>
-      </div> */}
-
         < DoubtInput getDoubt={getDoubt} contractAbi={contractAbi} setIsButtonLoading={setIsButtonLoading} currentAccount={currentAccount} />
 
         {/* Displaying all of the doubts posted on the contract */}
@@ -404,20 +369,19 @@ export const CreateFlow = () => {
                 <h3><b>Heading: {doubt.heading}</b></h3>
                 <p>Description: {doubt.description}</p>
                 <p>Ques_ID: {doubt.quesId.toString()}</p>
-                <button id="modalButton" onClick={() => openModal(doubt.quesId)}>Show Answers</button>
-                <button id="modalButton2" onClick={() => openModal2(doubt.quesId)}>Answer Question</button>
+                <Button variant="primary" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
+                <Button variant="primary" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
               </div>
             </div>
           )
         })}
 
-        {/* Modal 1 for displaying answers; convert it to accordian */}
-
-        <div id="myModal" className="modal1">
-          <div className="modal-content">
-            <h3>Answers</h3>
-            <span onClick={closeModal} id="closeSpanButton" className="close">&times;</span>
-
+        {/* Modal 1 for displaying answers */}
+        <Modal show={showAnswerModal} onHide={handleClose1}>
+          <Modal.Header closeButton>
+            <Modal.Title>Answers</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             {allAnswers.map((answer, index) => {
               return (
                 <div key={index}>
@@ -430,14 +394,17 @@ export const CreateFlow = () => {
                 </div>
               )
             })}
-          </div>
-        </div>
+          </Modal.Body>
+        </Modal>
 
         {/* Modal2 for Posting answers */}
-        <div id="myModal2" className="modal2">
-          <div className="modal-content">
-            <span onClick={closeModal2} id="closeSpanButton" className="close">&times;</span>
-            <h3>Type your answer</h3>
+        <Modal show={showAnswerForm} onHide={handleClose2}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              Submit your answer
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <Form>
               <FormGroup className="mb-3">
                 <FormControl
@@ -447,7 +414,8 @@ export const CreateFlow = () => {
                   placeholder="Enter the answer for this doubt"
                 ></FormControl>
               </FormGroup>
-              {/* <CreateButton
+              <Button
+                variant="success" className="button"
                 onClick={() => {
                   setIsButtonLoading(true);
                   postAnswer();
@@ -457,10 +425,10 @@ export const CreateFlow = () => {
                 }}
               >
                 Post an Answer
-              </CreateButton> */}
+              </Button>
             </Form>
-          </div>
-        </div>
+          </Modal.Body>
+        </Modal>
       </div>
     </div>
   );

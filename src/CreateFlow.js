@@ -17,7 +17,7 @@ import abi from "./utils/StreamFlow.json";
 //Components
 import Header from "./components/Header"
 import DoubtInput from "./components/DoubtInput";
-import ShowAnsModal from "./components/Modals";
+import { ShowAnsModal, PostAnswerModal } from "./components/Modals";
 
 
 // This abi is for testing purpose only. Use the StreamFlow ABI when deploying
@@ -355,6 +355,8 @@ export const CreateFlow = () => {
           currentDoubtId={currentDoubtId}
           contractAbi={contractAbi}
           contractaddress={contractaddress} />
+
+        <PostAnswerModal />
 
         {/* Modal2 for Posting answers */}
         <Modal show={showAnswerForm} onHide={handleClose2}>

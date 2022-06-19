@@ -4,12 +4,8 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import { Modal } from "react-bootstrap";
 import { ethers } from "ethers";
 
-function ShowAnsModal(props) {
-    console.log("This is the showAnswerModal component");
-    console.log(props);
-
+export function ShowAnsModal(props) {
     async function upvoteCurrentAnswer(ansId) {
-        console.log(props.currentDoubtId);
         const { ethereum } = window;
         try {
             if (ethereum) {
@@ -60,4 +56,10 @@ function ShowAnsModal(props) {
     )
 }
 
-export default ShowAnsModal;
+export function PostAnswerModal(props) {
+    return (
+        <header>
+            hi
+        </header>
+    );
+}

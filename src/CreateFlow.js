@@ -67,8 +67,6 @@ async function updateExistingFlow(recipient, flowRate) {
 
 }
 
-
-
 // exporting component
 export const CreateFlow = () => {
   //Main Function of this component -> Connect to the wallet, Retreive all the imp stuff import all components
@@ -150,7 +148,7 @@ export const CreateFlow = () => {
     console.log("chain ID:", chain);
     console.log("global Chain Id:", chainId);
     if (chainId !== "0x4") {
-      alert("Please Switch the network to rinkeby")
+      alert("Please Switch the network to rinkeby");
     }
     if (accounts.length !== 0) {
       const account = accounts[0];
@@ -167,7 +165,7 @@ export const CreateFlow = () => {
 
   useEffect(() => {
     checkIfWalletIsConnected();
-  }, []);
+  }, [currentAccount]);
 
   // for answers
   const handleAnswers = (e) => {

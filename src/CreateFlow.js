@@ -17,6 +17,7 @@ import abi from "./utils/StreamFlow.json";
 //Components
 import Header from "./components/Header"
 import DoubtInput from "./components/DoubtInput";
+import ShowAnsModal from "./components/Modals";
 
 
 // This abi is for testing purpose only. Use the StreamFlow ABI when deploying
@@ -352,10 +353,11 @@ export const CreateFlow = () => {
 
   // UI code
   return (
-
     <div className="position-sticky">
+      {/* Custom Header component */}
       <Header connectWallet={connectWallet} Card={Card} currentAccount={currentAccount} />
       <div className="container">
+        {/* Custom Doubt component */}
         < DoubtInput getDoubt={getDoubt} contractAbi={contractAbi} setIsButtonLoading={setIsButtonLoading} currentAccount={currentAccount} />
 
         {/* Displaying all of the doubts posted on the contract */}
@@ -375,25 +377,12 @@ export const CreateFlow = () => {
         })}
 
         {/* Modal 1 for displaying answers */}
-        <Modal show={showAnswerModal} onHide={handleClose1}>
-          <Modal.Header closeButton>
-            <Modal.Title>Answers</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {allAnswers.map((answer, index) => {
-              return (
-                <div key={index}>
-                  <span className="totalUpvotes">{answer.upvotes}</span>&nbsp;
-                  <button onClick={() => { upvoteCurrentAnswer(answer.ansId) }} className="upvoteArrow">&#8679;</button>
-                  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                  <span className="answerBody">Answer {answer.ansId}:- {answer.answerbody}</span>
-                  <hr></hr>
-                  <br></br>
-                </div>
-              )
-            })}
-          </Modal.Body>
-        </Modal>
+        <ShowAnsModal showstate={showAnswerModal}
+          onHidestate={handleClose1}
+          answerArray={allAnswers}
+          currentDoubtId={currentDoubtId}
+          contractAbi={contractAbi}
+          contractaddress={contractaddress} />
 
         {/* Modal2 for Posting answers */}
         <Modal show={showAnswerForm} onHide={handleClose2}>

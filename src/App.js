@@ -5,8 +5,8 @@ import { TestFlow } from "./testFlow"
 
 export default function App() {
   return (
-    <div className="App">
+    <>
       <CreateFlow />
-    </div>
+    </>
   );
 }

@@ -323,34 +323,6 @@ export const CreateFlow = () => {
     }
   }
 
-  // function to Upvote an answer
-  async function upvoteCurrentAnswer(ansId) {
-    console.log(currentDoubtId);
-    const { ethereum } = window;
-    try {
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const streamFlowContract = new ethers.Contract(
-          contractaddress,
-          contractAbi,
-          signer
-        );
-        const upvoteTxn = await streamFlowContract.upVote(
-          currentDoubtId,
-          ansId,
-        );
-        console.log("Mining...", upvoteTxn.hash);
-        await upvoteTxn.wait();
-        console.log("Mined -- ", upvoteTxn.hash); // answer posted
-      } else {
-        console.log("Ethereum object not found");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   // UI code
   return (
     <div className="position-sticky">

@@ -13,8 +13,7 @@ import {
   FormGroup,
   FormControl,
   Modal,
-  Button,
-  Spinner
+  Button
 } from "react-bootstrap";
 
 import { useState } from "react";
@@ -37,11 +36,9 @@ const DoubtInput = (props) => {
   const handleShow = () => setShow(true);
 
   async function createNewFlow(recipient, flowRate) {
-
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const chainId = await window.ethereum.request({ method: "eth_chainId" });
-
     const sf = await Framework.create({
       chainId: Number(chainId),
       provider: provider
@@ -56,12 +53,9 @@ const DoubtInput = (props) => {
         superToken: DAIx
         // userData?: string
       });
-
       console.log("Creating your stream...");
-
       const result = await createFlowOperation.exec(signer);
       console.log(result);
-
       console.log(
         `Congrats - you've just created a money stream!
           View Your Stream At: https://app.superfluid.finance/dashboard/${recipient}
@@ -190,9 +184,8 @@ const DoubtInput = (props) => {
   const handleDoubtDue = (e) => {
     setDoubtDue(() => ([e.target.name] = e.target.value));
   }
-  
-  return (
 
+  return (
     <>
       <Button variant="primary" onClick={handleShow}>
         Post your Doubt

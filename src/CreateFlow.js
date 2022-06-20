@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
 import {
   Button,
-  Form,
-  FormGroup,
-  FormControl,
-  Card,
-  Modal
+  Card
 } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
@@ -17,6 +13,7 @@ import abi from "./utils/StreamFlow.json";
 //Components
 import Header from "./components/Header"
 import DoubtInput from "./components/DoubtInput";
+import { ShowAnsModal, PostAnswerModal } from "./components/Modals";
 
 
 // This abi is for testing purpose only. Use the StreamFlow ABI when deploying
@@ -74,7 +71,6 @@ export const CreateFlow = () => {
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [currentAccount, setCurrentAccount] = useState(""); // current logged in account address
   const [allDoubts, setAllDoubts] = useState([]); // set an array of all doubts
-  const [answerBody, setAnswerBody] = useState(""); // track the answer body while typing an answer to submit
   const [allAnswers, setAllAnswers] = useState([]); // set an array of all answers
   const [currentDoubtId, setCurrentDoubtId] = useState(0); // storing the current access doubt ID for further functions
 
@@ -166,11 +162,6 @@ export const CreateFlow = () => {
   useEffect(() => {
     checkIfWalletIsConnected();
   }, [currentAccount]);
-
-  // for answers
-  const handleAnswers = (e) => {
-    setAnswerBody(() => ([e.target.name] = e.target.value));
-  }
 
   // Get all the doubts
   const getDoubt = async () => {
@@ -280,7 +271,7 @@ export const CreateFlow = () => {
         },
       ]);
       console.log(allDoubts);
-    }; // Team name AdEth
+    };
 
     if (window.ethereum) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -296,66 +287,13 @@ export const CreateFlow = () => {
     };
   }, [allDoubts, contractAbi]);
 
-  const postAnswer = async () => {
-    const { ethereum } = window;
-    try {
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const streamFlowContract = new ethers.Contract(
-          contractaddress,
-          contractAbi,
-          signer
-        );
-        const answerTxn = await streamFlowContract.answerDoubt(
-          answerBody,
-          currentDoubtId,
-        );
-        console.log("Mining...", answerTxn.hash);
-        await answerTxn.wait();
-        console.log("Mined -- ", answerTxn.hash); // answer posted
-      } else {
-        console.log("Ethereum object not found");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  // function to Upvote an answer
-  async function upvoteCurrentAnswer(ansId) {
-    console.log(currentDoubtId);
-    const { ethereum } = window;
-    try {
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const streamFlowContract = new ethers.Contract(
-          contractaddress,
-          contractAbi,
-          signer
-        );
-        const upvoteTxn = await streamFlowContract.upVote(
-          currentDoubtId,
-          ansId,
-        );
-        console.log("Mining...", upvoteTxn.hash);
-        await upvoteTxn.wait();
-        console.log("Mined -- ", upvoteTxn.hash); // answer posted
-      } else {
-        console.log("Ethereum object not found");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   // UI code
   return (
-
     <div className="position-sticky">
+      {/* Custom Header component */}
       <Header connectWallet={connectWallet} Card={Card} currentAccount={currentAccount} />
       <div className="container">
+        {/* Custom Doubt component */}
         < DoubtInput getDoubt={getDoubt} contractAbi={contractAbi} setIsButtonLoading={setIsButtonLoading} currentAccount={currentAccount} />
 
         {/* Displaying all of the doubts posted on the contract */}
@@ -375,58 +313,20 @@ export const CreateFlow = () => {
         })}
 
         {/* Modal 1 for displaying answers */}
-        <Modal show={showAnswerModal} onHide={handleClose1}>
-          <Modal.Header closeButton>
-            <Modal.Title>Answers</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {allAnswers.map((answer, index) => {
-              return (
-                <div key={index}>
-                  <span className="totalUpvotes">{answer.upvotes}</span>&nbsp;
-                  <button onClick={() => { upvoteCurrentAnswer(answer.ansId) }} className="upvoteArrow">&#8679;</button>
-                  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                  <span className="answerBody">Answer {answer.ansId}:- {answer.answerbody}</span>
-                  <hr></hr>
-                  <br></br>
-                </div>
-              )
-            })}
-          </Modal.Body>
-        </Modal>
+        <ShowAnsModal showState={showAnswerModal}
+          onHideState={handleClose1}
+          answerArray={allAnswers}
+          currentDoubtId={currentDoubtId}
+          contractAbi={contractAbi}
+          contractaddress={contractaddress} />
 
         {/* Modal2 for Posting answers */}
-        <Modal show={showAnswerForm} onHide={handleClose2}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              Submit your answer
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <FormGroup className="mb-3">
-                <FormControl
-                  name="answerBody"
-                  value={answerBody}
-                  onChange={handleAnswers}
-                  placeholder="Enter the answer for this doubt"
-                ></FormControl>
-              </FormGroup>
-              <Button
-                variant="success" className="button"
-                onClick={() => {
-                  setIsButtonLoading(true);
-                  postAnswer();
-                  setTimeout(() => {
-                    setIsButtonLoading(false);
-                  }, 1000);
-                }}
-              >
-                Post an Answer
-              </Button>
-            </Form>
-          </Modal.Body>
-        </Modal>
+        <PostAnswerModal showState={showAnswerForm}
+          onHideState={handleClose2}
+          setIsButtonLoading={setIsButtonLoading}
+          currentDoubtId={currentDoubtId}
+          contractAbi={contractAbi}
+          contractaddress={contractaddress} />
       </div>
     </div>
   );

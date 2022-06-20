@@ -190,7 +190,7 @@ const DoubtInput = (props) => {
   const handleDoubtDue = (e) => {
     setDoubtDue(() => ([e.target.name] = e.target.value));
   }
-  
+
   return (
 
     <>

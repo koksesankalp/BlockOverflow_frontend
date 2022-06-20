@@ -1,9 +1,14 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
-import { Modal } from "react-bootstrap";
+import {
+    Modal,
+    Form,
+    FormGroup,
+    FormControl,
+    Button
+} from "react-bootstrap";
 import { ethers } from "ethers";
+import { useState } from 'react';
 
+// modal for viewing answers
 export function ShowAnsModal(props) {
     async function upvoteCurrentAnswer(ansId) {
         const { ethereum } = window;
@@ -33,7 +38,7 @@ export function ShowAnsModal(props) {
 
     return (
         <>
-            <Modal show={props.showstate} onHide={props.onHidestate}>
+            <Modal show={props.showState} onHide={props.onHideState}>
                 <Modal.Header closeButton>
                     <Modal.Title>Answers</Modal.Title>
                 </Modal.Header>
@@ -56,10 +61,73 @@ export function ShowAnsModal(props) {
     )
 }
 
+// modal for posting answers
 export function PostAnswerModal(props) {
+    const [answerBody, setAnswerBody] = useState("");
+    // for answers
+    const handleAnswers = (e) => {
+        setAnswerBody(() => ([e.target.name] = e.target.value));
+    }
+
+    // function to post answer to smart contract
+    const postAnswer = async () => {
+        const { ethereum } = window;
+        try {
+            if (ethereum) {
+                const provider = new ethers.providers.Web3Provider(ethereum);
+                const signer = provider.getSigner();
+                const streamFlowContract = new ethers.Contract(
+                    props.contractaddress,
+                    props.contractAbi,
+                    signer
+                );
+                const answerTxn = await streamFlowContract.answerDoubt(
+                    answerBody,
+                    props.currentDoubtId,
+                );
+                console.log("Mining...", answerTxn.hash);
+                await answerTxn.wait();
+                console.log("Mined -- ", answerTxn.hash); // answer posted
+            } else {
+                console.log("Ethereum object not found");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
-        <header>
-            hi
-        </header>
+        <>
+            <Modal show={props.showState} onHide={props.onHideState}>
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Submit your answer
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <FormGroup className="mb-3">
+                            <FormControl
+                                name="answerBody"
+                                value={answerBody}
+                                onChange={handleAnswers}
+                                placeholder="Enter the answer for this doubt"
+                            ></FormControl>
+                        </FormGroup>
+                        <Button
+                            variant="success" className="button"
+                            onClick={() => {
+                                props.setIsButtonLoading(true);
+                                postAnswer();
+                                setTimeout(() => {
+                                    props.setIsButtonLoading(false);
+                                }, 1000);
+                            }}
+                        >
+                            Post an Answer
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+        </>
     );
 }

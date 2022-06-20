@@ -20,7 +20,7 @@ import { useState } from "react";
 import { ethers } from "ethers";
 
 const DoubtInput = (props) => {
-  const contractaddress = "0x9FC6B3F3666cBaF8E37948B05C4aB680Eb0988B4";
+  const contractaddress = props.contractAddress;
 
   //Pure States
   const [doubt_heading, setDoubtHeading] = useState("");

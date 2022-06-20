@@ -7,6 +7,7 @@ import {
 } from "react-bootstrap";
 import { ethers } from "ethers";
 import { useState } from 'react';
+import { marked } from 'marked';
 
 // modal for viewing answers
 export function ShowAnsModal(props) {
@@ -67,6 +68,7 @@ export function PostAnswerModal(props) {
     // for answers
     const handleAnswers = (e) => {
         setAnswerBody(() => ([e.target.name] = e.target.value));
+        console.log(answerBody);
     }
 
     // function to post answer to smart contract
@@ -95,8 +97,26 @@ export function PostAnswerModal(props) {
             console.log(error);
         }
     }
+    const samplehtml = marked.parse('# Marked in React\n\nRendered by **marked**.');
+    console.log(samplehtml);
+    var inputStyle = {
+        width: "400px",
+        height: "50vh",
+        marginLeft: "auto",
+        marginRight: "auto",
+        padding: "10px"
+    }
+    var outputStyle = {
+        width: "400px",
+        height: "50vh",
+        backgroundColor: "#DCDCDC",
+        marginLeft: "auto",
+        marginRight: "auto",
+        padding: "10px"
+    }
     return (
         <>
+        {samplehtml}
             <Modal show={props.showState} onHide={props.onHideState}>
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -106,12 +126,26 @@ export function PostAnswerModal(props) {
                 <Modal.Body>
                     <Form>
                         <FormGroup className="mb-3">
-                            <FormControl
+                            {/* <FormControl
                                 name="answerBody"
                                 value={answerBody}
                                 onChange={handleAnswers}
                                 placeholder="Enter the answer for this doubt"
-                            ></FormControl>
+                            ></FormControl> */}
+                            <div className="mark-input" style={inputStyle}>
+                                <textarea name="answerBody"
+                                    style={inputStyle}
+                                    value={answerBody}
+                                    onChange={handleAnswers}
+                                    className="input"
+                                    placeholder="Enter the answer for this doubt">
+                                </textarea>
+                            </div>
+                            <div style={outputStyle}
+                            dangerouslySetInnerHTML = {{
+                                __html: marked.parse(answerBody),
+                            }}>
+                            </div>
                         </FormGroup>
                         <Button
                             variant="success" className="button"

@@ -4,6 +4,7 @@ import {
   Button,
   Card
 } from "react-bootstrap";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import "./CreateFlow.css";
@@ -294,7 +295,11 @@ export const CreateFlow = () => {
       <Header connectWallet={connectWallet} Card={Card} currentAccount={currentAccount} />
       <div className="container">
         {/* Custom Doubt component */}
-        < DoubtInput getDoubt={getDoubt} contractAbi={contractAbi} setIsButtonLoading={setIsButtonLoading} currentAccount={currentAccount} />
+        <DoubtInput getDoubt={getDoubt}
+          contractAbi={contractAbi}
+          contractAddress={contractaddress}
+          setIsButtonLoading={setIsButtonLoading}
+          currentAccount={currentAccount} />
 
         {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {

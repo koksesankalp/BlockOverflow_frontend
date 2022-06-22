@@ -2,7 +2,6 @@ import {
     Modal,
     Form,
     FormGroup,
-    FormControl,
     Button
 } from "react-bootstrap";
 import { ethers } from "ethers";
@@ -102,8 +101,6 @@ export function PostAnswerModal(props) {
             console.log(error);
         }
     }
-    const samplehtml = marked.parse('# Marked in React\n\nRendered by **marked**.');
-    console.log(samplehtml);
     var inputStyle = {
         width: "400px",
         height: "50vh",
@@ -121,7 +118,6 @@ export function PostAnswerModal(props) {
     }
     return (
         <>
-        {samplehtml}
             <Modal show={props.showState} onHide={props.onHideState}>
                 <Modal.Header closeButton>
                     <Modal.Title>

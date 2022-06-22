@@ -15,6 +15,8 @@ import {
   Modal,
   Button
 } from "react-bootstrap";
+import { marked } from 'marked';
+
 
 import { useState } from "react";
 import { ethers } from "ethers";
@@ -208,12 +210,25 @@ const DoubtInput = (props) => {
             </FormGroup>
             <FormGroup className="mb-3">
               <p>Enter the Doubt description</p>
-              <FormControl
+              {/* <FormControl
                 name="doubt_description"
                 value={doubt_description}
                 onChange={handleDoubtDescription}
                 placeholder="Enter the doubt description"
-              ></FormControl>
+              ></FormControl> */}
+              <div className="mark-input">
+                <textarea name="doubtBody"
+                  value={doubt_description}
+                  onChange={handleDoubtDescription}
+                  className="input"
+                  placeholder="Enter the doubt description">
+                </textarea>
+              </div>
+              <div className="doubtBody"
+                dangerouslySetInnerHTML={{
+                  __html: marked.parse(doubt_description),
+                }}>
+              </div>
             </FormGroup>
             <FormGroup className="mb-3">
               <p>Enter the due days until the bounty is valid</p>

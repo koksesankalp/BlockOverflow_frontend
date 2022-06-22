@@ -5,7 +5,7 @@ import {
     Button
 } from "react-bootstrap";
 import { ethers } from "ethers";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { marked } from 'marked';
 
 // modal for viewing answers
@@ -38,7 +38,7 @@ export function ShowAnsModal(props) {
 
     return (
         <>
-            <Modal show={props.showState} onHide={props.onHideState}>
+            <Modal show={props.showState} onHide={props.onHideState} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Answers</Modal.Title>
                 </Modal.Header>
@@ -76,6 +76,11 @@ export function PostAnswerModal(props) {
         console.log(answerBody);
     }
 
+    // Start from a blank answer for a new question.
+    useEffect(() => {
+        setAnswerBody("");
+    }, [props.currentDoubtId]);
+
     // function to post answer to smart contract
     const postAnswer = async () => {
         const { ethereum } = window;
@@ -104,24 +109,24 @@ export function PostAnswerModal(props) {
     }
 
     var inputStyle = {
-        width: "400px",
+        width: "100%",
         height: "50vh",
         marginLeft: "auto",
         marginRight: "auto",
         padding: "10px"
     }
     var outputStyle = {
-        width: "400px",
+        width: "100%",
         height: "50vh",
         backgroundColor: "#DCDCDC",
         marginLeft: "auto",
         marginRight: "auto",
         padding: "10px",
-        overflowy: "auto"
+        overflow: "auto"
     }
     return (
         <>
-            <Modal show={props.showState} onHide={props.onHideState}>
+            <Modal show={props.showState} onHide={props.onHideState} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>
                         Submit your answer

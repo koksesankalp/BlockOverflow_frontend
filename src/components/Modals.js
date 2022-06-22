@@ -50,10 +50,10 @@ export function ShowAnsModal(props) {
                                 <button onClick={() => { upvoteCurrentAnswer(answer.ansId) }} className="upvoteArrow">&#8679;</button>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                                 <span className="answerBody">Answer {answer.ansId}:-</span>
-                                <div className="mark-input" 
-                                dangerouslySetInnerHTML = {{
-                                    __html: marked.parse(answer.answerbody),
-                                }}>
+                                <div className="mark-input"
+                                    dangerouslySetInnerHTML={{
+                                        __html: marked.parse(answer.answerbody),
+                                    }}>
                                 </div>
                                 <hr></hr>
                                 <br></br>
@@ -69,6 +69,7 @@ export function ShowAnsModal(props) {
 // modal for posting answers
 export function PostAnswerModal(props) {
     const [answerBody, setAnswerBody] = useState("");
+    const [previewMarkdown, setPreviewMarkdown] = useState(false); // uswitch between the preview and writing windows
     // for answers
     const handleAnswers = (e) => {
         setAnswerBody(() => ([e.target.name] = e.target.value));
@@ -101,6 +102,7 @@ export function PostAnswerModal(props) {
             console.log(error);
         }
     }
+
     var inputStyle = {
         width: "400px",
         height: "50vh",
@@ -114,7 +116,8 @@ export function PostAnswerModal(props) {
         backgroundColor: "#DCDCDC",
         marginLeft: "auto",
         marginRight: "auto",
-        padding: "10px"
+        padding: "10px",
+        overflowy: "auto"
     }
     return (
         <>
@@ -125,28 +128,34 @@ export function PostAnswerModal(props) {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <div className="mark-preview-btns" style={{ flexDirection: 'row' }}>
+                        <Button variant="primary" size="sm" style={{ flex: 1 }}
+                            onClick={() => {
+                                setPreviewMarkdown(!previewMarkdown);
+                                console.log(previewMarkdown);
+                            }}> {!previewMarkdown ? "Preview" : "Write"}
+                        </Button>
+                    </div>
                     <Form>
                         <FormGroup className="mb-3">
-                            {/* <FormControl
-                                name="answerBody"
-                                value={answerBody}
-                                onChange={handleAnswers}
-                                placeholder="Enter the answer for this doubt"
-                            ></FormControl> */}
-                            <div className="mark-input" style={inputStyle}>
-                                <textarea name="answerBody"
-                                    style={inputStyle}
-                                    value={answerBody}
-                                    onChange={handleAnswers}
-                                    className="input"
-                                    placeholder="Enter the answer for this doubt">
-                                </textarea>
-                            </div>
-                            <div style={outputStyle}
-                            dangerouslySetInnerHTML = {{
-                                __html: marked.parse(answerBody),
-                            }}>
-                            </div>
+                            {/* Display the writing part when preview is false
+                            Display the output markdown when the preview is true. */}
+                            {!previewMarkdown ?
+                                <div className="mark-input" style={inputStyle}>
+                                    <textarea name="answerBody"
+                                        style={inputStyle}
+                                        value={answerBody}
+                                        onChange={handleAnswers}
+                                        className="input"
+                                        placeholder="Enter the answer for this doubt">
+                                    </textarea>
+                                </div> :
+                                <div style={outputStyle}
+                                    dangerouslySetInnerHTML={{
+                                        __html: marked.parse(answerBody),
+                                    }}>
+                                </div>
+                            }
                         </FormGroup>
                         <Button
                             variant="success" className="button"

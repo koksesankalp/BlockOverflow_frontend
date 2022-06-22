@@ -50,7 +50,12 @@ export function ShowAnsModal(props) {
                                 <span className="totalUpvotes">{answer.upvotes}</span>&nbsp;
                                 <button onClick={() => { upvoteCurrentAnswer(answer.ansId) }} className="upvoteArrow">&#8679;</button>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                                <span className="answerBody">Answer {answer.ansId}:- {answer.answerbody}</span>
+                                <span className="answerBody">Answer {answer.ansId}:-</span>
+                                <div className="mark-input" 
+                                dangerouslySetInnerHTML = {{
+                                    __html: marked.parse(answer.answerbody),
+                                }}>
+                                </div>
                                 <hr></hr>
                                 <br></br>
                             </div>

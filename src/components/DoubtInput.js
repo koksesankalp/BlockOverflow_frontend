@@ -29,6 +29,9 @@ const DoubtInput = (props) => {
   const [doubt_description, setDoubtDescription] = useState("");
   const [doubt_due, setDoubtDue] = useState(0);
 
+  //markdown states
+  const [previewMarkdown, setPreviewMarkdown] = useState(false); // switch between the preview and writing windows
+
   const [flowRate, setFlowRate] = useState("");
   const [flowRateDisplay, setFlowRateDisplay] = useState("");
   const [doubtFlowRateDisplay, setDoubtFlowRateDisplay] = useState("");
@@ -187,6 +190,24 @@ const DoubtInput = (props) => {
     setDoubtDue(() => ([e.target.name] = e.target.value));
   }
 
+  // styles
+  var inputStyle = {
+    width: "100%",
+    height: "50vh",
+    marginLeft: "auto",
+    marginRight: "auto",
+    padding: "10px"
+}
+var outputStyle = {
+    width: "100%",
+    height: "50vh",
+    backgroundColor: "#DCDCDC",
+    marginLeft: "auto",
+    marginRight: "auto",
+    padding: "10px",
+    overflow: "auto"
+}
+
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
@@ -208,27 +229,32 @@ const DoubtInput = (props) => {
                 placeholder="Enter the doubt heading"
               ></FormControl>
             </FormGroup>
+            <div className="mark-preview-btn" style={{ flexDirection: 'row' }}>
+              <Button type="button" variant="primary"
+                size="sm" style={{ flex: 1 }}
+                onClick={() => {
+                  setPreviewMarkdown(!previewMarkdown);
+                  console.log(previewMarkdown);
+                }}>
+                {!previewMarkdown ? "Preview" : "Write"}
+              </Button>
+            </div>
             <FormGroup className="mb-3">
               <p>Enter the Doubt description</p>
-              {/* <FormControl
-                name="doubt_description"
-                value={doubt_description}
-                onChange={handleDoubtDescription}
-                placeholder="Enter the doubt description"
-              ></FormControl> */}
-              <div className="mark-input">
-                <textarea name="doubtBody"
+              {!previewMarkdown ? 
+              <div className="mark-input" style={inputStyle}>
+                <textarea name="doubtBody" style={inputStyle}
                   value={doubt_description}
                   onChange={handleDoubtDescription}
                   className="input"
                   placeholder="Enter the doubt description">
                 </textarea>
-              </div>
-              <div className="doubtBody"
+              </div> : <div className="doubtBody" style={outputStyle}
                 dangerouslySetInnerHTML={{
                   __html: marked.parse(doubt_description),
                 }}>
               </div>
+              }
             </FormGroup>
             <FormGroup className="mb-3">
               <p>Enter the due days until the bounty is valid</p>

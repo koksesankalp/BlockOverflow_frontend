@@ -69,7 +69,7 @@ export function ShowAnsModal(props) {
 // modal for posting answers
 export function PostAnswerModal(props) {
     const [answerBody, setAnswerBody] = useState("");
-    const [previewMarkdown, setPreviewMarkdown] = useState(false); // uswitch between the preview and writing windows
+    const [previewMarkdown, setPreviewMarkdown] = useState(false); // switch between the preview and writing windows
     // for answers
     const handleAnswers = (e) => {
         setAnswerBody(() => ([e.target.name] = e.target.value));
@@ -128,7 +128,7 @@ export function PostAnswerModal(props) {
         <>
             <Modal show={props.showState} onHide={props.onHideState} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>
+                    <Modal.Title style={{alignContent: "center"}}>
                         Submit your answer
                     </Modal.Title>
                 </Modal.Header>
@@ -137,7 +137,6 @@ export function PostAnswerModal(props) {
                         <Button variant="primary" size="sm" style={{ flex: 1 }}
                             onClick={() => {
                                 setPreviewMarkdown(!previewMarkdown);
-                                console.log(previewMarkdown);
                             }}> {!previewMarkdown ? "Preview" : "Write"}
                         </Button>
                     </div>
@@ -163,7 +162,7 @@ export function PostAnswerModal(props) {
                             }
                         </FormGroup>
                         <Button
-                            variant="success" className="button"
+                            variant="success" className="button" size="sm"
                             onClick={() => {
                                 props.setIsButtonLoading(true);
                                 postAnswer();

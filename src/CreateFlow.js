@@ -16,6 +16,8 @@ import Header from "./components/Header"
 import DoubtInput from "./components/DoubtInput";
 import { ShowAnsModal, PostAnswerModal } from "./components/Modals";
 
+// Markdown
+import { marked } from 'marked';
 
 // This abi is for testing purpose only. Use the StreamFlow ABI when deploying
 // import abi from "./utils/TestFlow.json";
@@ -308,7 +310,10 @@ export const CreateFlow = () => {
               <div className="container">
                 {/* <h3>Address: {doubt.address}</h3> */}
                 <h3><b>Heading: {doubt.heading}</b></h3>
-                <p>Description: {doubt.description}</p>
+                <p>Doubt Description</p>
+                <div dangerouslySetInnerHTML={{
+                  __html: marked.parse(doubt.description),
+                }}></div>
                 <p>Ques_ID: {doubt.quesId.toString()}</p>
                 <Button variant="primary" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
                 <Button variant="primary" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>

@@ -1,18 +1,6 @@
-.description {
-  margin-top: 3%;
-}
-
-.mb-3 {
-  margin-left: 3%;
-  margin-right: 3%;
-}
-
 .calculation {
   border: 2px solid green;
   padding: 2.5%;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-top: 2.5%;
 }
 
 div.fade.model.show {
@@ -43,7 +31,6 @@ div.fade.model.show {
 }
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */

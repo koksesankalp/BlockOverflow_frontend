@@ -1,39 +1,43 @@
-/*What anol we actually need props for -> 
-Button loading, CreateButton, getDoubt, contractABI,  currentAccount
-*/
-
 import { Framework } from "@superfluid-finance/sdk-core";
+import { useState } from "react";
+import { ethers } from "ethers";
+
+// markdown
+import { marked } from 'marked';
+
 import "../CreateFlow.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
-
 import {
   Form,
   FormGroup,
   FormControl,
   Modal,
-  Button
+  Button,
+  FormLabel,
+  Row,
+  Col
 } from "react-bootstrap";
 
-import { useState } from "react";
-import { ethers } from "ethers";
-
+// Doubt posting component
 const DoubtInput = (props) => {
-  const contractaddress = "0x9FC6B3F3666cBaF8E37948B05C4aB680Eb0988B4";
-
+  const contractaddress = props.contractAddress;
   //Pure States
   const [doubt_heading, setDoubtHeading] = useState("");
-  const [doubt_description, setDoubtDescription] = useState("");
+  const [doubt_description, setDoubtDescription] = useState("# Enter your doubt here");
   const [doubt_due, setDoubtDue] = useState(0);
 
+  //markdown state
+  const [previewMarkdown, setPreviewMarkdown] = useState(false); // switch between the preview and writing windows
+
+  // flowrate states
   const [flowRate, setFlowRate] = useState("");
   const [flowRateDisplay, setFlowRateDisplay] = useState("");
   const [doubtFlowRateDisplay, setDoubtFlowRateDisplay] = useState("");
 
+  // modal state
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   async function createNewFlow(recipient, flowRate) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -103,6 +107,7 @@ const DoubtInput = (props) => {
     }
   }
 
+  // function to post a Doubt and start a looping stream transaction
   const postADoubt = async () => {
     const { ethereum } = window;
     try {
@@ -150,6 +155,7 @@ const DoubtInput = (props) => {
     }
   }
 
+  // handle the input form to re-calculate on change flowrate.
   const handleFlowRateChange = (e) => {
     setFlowRate(() => ([e.target.name] = e.target.value));
     let newFlowRateDisplay = calculateFlowRate(e.target.value);
@@ -185,20 +191,36 @@ const DoubtInput = (props) => {
     setDoubtDue(() => ([e.target.name] = e.target.value));
   }
 
+  // styles
+  var inputStyle = {
+    width: "100%",
+    height: "50vh",
+    marginLeft: "auto",
+    marginRight: "auto",
+  }
+  var outputStyle = {
+    width: "100%",
+    height: "50vh",
+    backgroundColor: "#DCDCDC",
+    marginLeft: "auto",
+    marginRight: "auto",
+    padding: "10px",
+    overflow: "auto"
+  }
+
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" onClick={() => setShow(true)}>
         Post your Doubt
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={() => setShow(false)} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Enter Doubt</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form id="myDoubtForm">
             <FormGroup className="mb-3">
-              <p>Enter the Doubt Heading</p>
               <FormControl
                 name="doubt_heading"
                 value={doubt_heading}
@@ -206,36 +228,53 @@ const DoubtInput = (props) => {
                 placeholder="Enter the doubt heading"
               ></FormControl>
             </FormGroup>
-            <FormGroup className="mb-3">
-              <p>Enter the Doubt description</p>
-              <FormControl
-                name="doubt_description"
-                value={doubt_description}
-                onChange={handleDoubtDescription}
-                placeholder="Enter the doubt description"
-              ></FormControl>
-            </FormGroup>
-            <FormGroup className="mb-3">
-              <p>Enter the due days until the bounty is valid</p>
-              <FormControl
-                name="doubt_due"
-                value={doubt_due}
-                onChange={handleDoubtDue}
-                placeholder="Enter the doubt due days"
-              ></FormControl>
-            </FormGroup>
 
-            {/* displaying flowRate */}
+            <div className="d-flex justify-content-end">
+              <Button type="button" variant="primary"
+                size="sm"
+                onClick={() => {
+                  setPreviewMarkdown(!previewMarkdown);
+                  console.log(previewMarkdown);
+                }}>
+                {!previewMarkdown ? "Preview" : "Write"}
+              </Button>
+            </div>
             <FormGroup className="mb-3">
-              <p>Enter the bounty of your doubt (optional)</p>
-              <FormControl
-                name="flowRate"
-                value={flowRate}
-                onChange={handleFlowRateChange}
-                placeholder="Enter a bounty amount in wei/second"
-              ></FormControl>
+              {!previewMarkdown ?
+                <div className="mark-input" style={inputStyle}>
+                  <textarea name="doubtBody" style={inputStyle}
+                    value={doubt_description}
+                    onChange={handleDoubtDescription}
+                    className="input"
+                    placeholder="Write your Doubt here">
+                  </textarea>
+                </div> : <div className="doubtBody" style={outputStyle}
+                  dangerouslySetInnerHTML={{
+                    __html: marked.parse(doubt_description),
+                  }}>
+                </div>
+              }
             </FormGroup>
-
+            <Row className="mb-3 d-flex justify-content-center">
+              <FormGroup as={Col} md="6" className="bountyInput">
+                <FormLabel>Bounty Duration</FormLabel>
+                <FormControl style={{ width: "70%" }}
+                  name="doubt_due"
+                  value={doubt_due}
+                  onChange={handleDoubtDue}
+                  placeholder="Days"
+                ></FormControl>
+              </FormGroup>
+              <FormGroup as={Col} md="6" className="flowRateIput">
+                <FormLabel>Bounty Amount</FormLabel>
+                <FormControl style={{ width: "70%" }}
+                  name="flowRate"
+                  value={flowRate}
+                  onChange={handleFlowRateChange}
+                  placeholder="wei/second"
+                ></FormControl>
+              </FormGroup>
+            </Row>
             <div className="description">
               <div className="calculation">
                 <p>Bounty flow Rate with Superfluid</p>
@@ -265,5 +304,4 @@ const DoubtInput = (props) => {
     </>
   )
 }
-
 export default DoubtInput;

@@ -99,6 +99,20 @@ export const CreateFlow = () => {
   const contractAbi = abi.abi; // use this while submitting the project.
   // const contractAbi = abi; // this is only for testing using remix
 
+  //Function that returns the contract object
+  const connectToContract = () => {
+    const { ethereum } = window;
+    if (!ethereum) {
+      alert("Get MetaMask!");
+      return;
+    }
+
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(contractaddress, contractAbi, signer);
+    return contract;
+  }
+  
   // Function to connect the wallet.
   const connectWallet = async () => {
     try {
@@ -171,13 +185,7 @@ export const CreateFlow = () => {
     const { ethereum } = window;
     try {
       if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const streamFlowContract = new ethers.Contract(
-          contractaddress,
-          contractAbi,
-          signer
-        );
+        const streamFlowContract = connectToContract();
         const postedDoubts = await streamFlowContract.readDoubts();
         const postedDoubtsCleaned = postedDoubts.map(postedDoubt => {
           return {
@@ -204,13 +212,7 @@ export const CreateFlow = () => {
     const { ethereum } = window;
     try {
       if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const streamFlowContract = new ethers.Contract(
-          contractaddress,
-          contractAbi,
-          signer
-        );
+        const streamFlowContract = connectToContract();
         const postedAnswers = await streamFlowContract.readAnsS(qId);
         const postedAnswersCleaned = postedAnswers.map(postedAnswer => {
           return {
@@ -246,9 +248,7 @@ export const CreateFlow = () => {
       console.log(allAnswers);
     };
     if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      streamFlowContract = new ethers.Contract(contractaddress, contractAbi, signer);
+      streamFlowContract = connectToContract();
       streamFlowContract = new ethers.providers.Web3Provider(window.ethereum);
       streamFlowContract.on("NewUpdateAnswer", onNewAnswer);
     }
@@ -277,9 +277,7 @@ export const CreateFlow = () => {
     };
 
     if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      streamFlowContract = new ethers.Contract(contractaddress, contractAbi, signer);
+      streamFlowContract = connectToContract();
       streamFlowContract = new ethers.providers.Web3Provider(window.ethereum);
       streamFlowContract.on("NewDoubt", onNewDoubt);
     }

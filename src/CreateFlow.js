@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
-import {
-  Button,
-  Card
-} from "react-bootstrap";
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
+import { Button } from "react-bootstrap";
 import "./CreateFlow.css";
 import { ethers } from "ethers";
 import abi from "./utils/StreamFlow.json";
@@ -18,6 +12,7 @@ import { ShowAnsModal, PostAnswerModal } from "./components/Modals";
 
 // Markdown
 import { marked } from 'marked';
+const erc20_abi = require('./utils/ERC20_abi.json');
 
 // This abi is for testing purpose only. Use the StreamFlow ABI when deploying
 // import abi from "./utils/TestFlow.json";
@@ -76,6 +71,8 @@ export const CreateFlow = () => {
   const [allDoubts, setAllDoubts] = useState([]); // set an array of all doubts
   const [allAnswers, setAllAnswers] = useState([]); // set an array of all answers
   const [currentDoubtId, setCurrentDoubtId] = useState(0); // storing the current access doubt ID for further functions
+  const [userBalance, setUserBalance] = useState(0);
+  const [DAIxBalance, setDAIxBalance] = useState(0);
 
   // for the Modals
   const [showAnswerModal, setShowAnswerModal] = useState(false);
@@ -108,6 +105,7 @@ export const CreateFlow = () => {
     }
 
     const provider = new ethers.providers.Web3Provider(ethereum);
+    console.log(provider);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(contractaddress, contractAbi, signer);
     return contract;
@@ -153,8 +151,14 @@ export const CreateFlow = () => {
     const chain = await window.ethereum.request({ method: "eth_chainId" });
     const provider = new ethers.providers.Web3Provider(ethereum);
     provider.getBalance(accounts[0]).then((balance) => {
-      const balanceInEth = ethers.utils.formatEther(balance);
-      console.log(balanceInEth); // printing the balance of the current connected account
+      setUserBalance(ethers.utils.formatEther(balance));
+      console.log(userBalance); // printing the balance of the current connected account
+    });
+    const DAIx_token = "0x745861AeD1EEe363b4AaA5F1994Be40b1e05Ff90";
+    const DAIx_contract = new ethers.Contract(DAIx_token, erc20_abi, provider);
+    DAIx_contract.balanceOf(accounts[0]).then((balance) => {
+      setDAIxBalance(ethers.utils.formatEther(balance));
+      console.log("DAIx Balance: ", ethers.utils.formatEther(balance));
     });
 
     let chainId = chain;
@@ -292,7 +296,7 @@ export const CreateFlow = () => {
   return (
     <div className="position-sticky">
       {/* Custom Header component */}
-      <Header connectWallet={connectWallet} Card={Card} currentAccount={currentAccount} />
+      <Header connectWallet={connectWallet} currentAccount={currentAccount} balance={DAIxBalance} />
       <div className="container">
         {/* Custom Doubt component */}
         <DoubtInput getDoubt={getDoubt}

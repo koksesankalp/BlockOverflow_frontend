@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
-import { Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import "./CreateFlow.css";
 import { ethers } from "ethers";
 import abi from "./utils/StreamFlow.json";
@@ -68,6 +68,7 @@ export const CreateFlow = () => {
   //States
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [currentAccount, setCurrentAccount] = useState(""); // current logged in account address
+  const [walletConnected, setWalletConnected] = useState(false);
   const [allDoubts, setAllDoubts] = useState([]); // set an array of all doubts
   const [allAnswers, setAllAnswers] = useState([]); // set an array of all answers
   const [currentDoubtId, setCurrentDoubtId] = useState(0); // storing the current access doubt ID for further functions
@@ -103,14 +104,13 @@ export const CreateFlow = () => {
       alert("Get MetaMask!");
       return;
     }
-
     const provider = new ethers.providers.Web3Provider(ethereum);
     console.log(provider);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(contractaddress, contractAbi, signer);
     return contract;
   }
-  
+
   // Function to connect the wallet.
   const connectWallet = async () => {
     try {
@@ -129,6 +129,7 @@ export const CreateFlow = () => {
       }
       console.log(chainId);
       setCurrentAccount(accounts[0]);
+      setWalletConnected(true);
       // let account = currentAccount;
       // Setup listener! This is for the case where a user comes to our site
       // and connected their wallet for the first time.
@@ -171,6 +172,7 @@ export const CreateFlow = () => {
       const account = accounts[0];
       console.log("Found an authorized account:", account);
       setCurrentAccount(account);
+      setWalletConnected(true);
       // Setup listener! This is for the case where a user comes to our site
       // and ALREADY had their wallet connected + authorized.
       // setupEventListener()
@@ -304,25 +306,37 @@ export const CreateFlow = () => {
           contractAddress={contractaddress}
           setIsButtonLoading={setIsButtonLoading}
           currentAccount={currentAccount} />
+        <br></br>
 
         {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {
           return (
-            <div className="card" key={index}>
-              <div className="container">
-                {/* <h3>Address: {doubt.address}</h3> */}
-                <h3><b>Heading: {doubt.heading}</b></h3>
-                <p>Doubt Description</p>
-                <div dangerouslySetInnerHTML={{
-                  __html: marked.parse(doubt.description),
-                }}></div>
-                <p>Ques_ID: {doubt.quesId.toString()}</p>
-                <Button variant="primary" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
-                <Button variant="primary" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
+            <>
+              <div className="card" key={index}>
+                <div className="container">
+                  {/* <h3>Address: {doubt.address}</h3> */}
+                  <h3><b>{doubt.heading}</b></h3>
+                  <div dangerouslySetInnerHTML={{
+                    __html: marked.parse(doubt.description),
+                  }}></div>
+                  {/* <p>Ques_ID: {doubt.quesId.toString()}</p> */}
+                  <Button variant="primary" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
+                  <Button variant="primary" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
+                </div>
               </div>
-            </div>
+              <br></br>
+            </>
           )
         })}
+
+        {/* Modal if wallet is not connected */}
+        {/* <ConnectWalletModal showState={!walletConnected} */}
+        <Modal show={!walletConnected}>
+          <Modal.Title>Connect your wallet</Modal.Title>
+          <button id="connectWallet" className="button btn btn-primary my-2 my-sm-0" onClick={connectWallet}>
+            Connect Wallet
+          </button>
+        </Modal>
 
         {/* Modal 1 for displaying answers */}
         <ShowAnsModal showState={showAnswerModal}

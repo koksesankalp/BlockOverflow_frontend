@@ -331,11 +331,26 @@ export const CreateFlow = () => {
 
         {/* Modal if wallet is not connected */}
         {/* <ConnectWalletModal showState={!walletConnected} */}
-        <Modal show={!walletConnected}>
-          <Modal.Title>Connect your wallet</Modal.Title>
-          <button id="connectWallet" className="button btn btn-primary my-2 my-sm-0" onClick={connectWallet}>
-            Connect Wallet
-          </button>
+        <Modal show={!walletConnected} centered className="connectWalletModal">
+            <Modal.Title>
+              BlockOverflow
+            </Modal.Title>
+            <Modal.Body>
+              <div className="container">
+                <div className="row">
+                  <div className="col">
+                    <h4>Decentralized & Secure rewards in <span className="highlightText">real-time.<br></br>Literally.</span>
+                    </h4>
+                  </div>
+                  <div className="col">
+                    Select your wallet to connect from.
+                    <button id="connectWallet" className="button btn btn-primary my-2 my-sm-0" onClick={connectWallet}>
+                      Connect Wallet
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Modal.Body>
         </Modal>
 
         {/* Modal 1 for displaying answers */}

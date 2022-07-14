@@ -52,6 +52,10 @@ div.fade.model.show {
   text-align: left;
 }
 
-CreateButton {
-  color: aqua;
+.connectWalletModal .modal-content {
+  background-color: rgb(43, 1, 75);
+  color: whitesmoke;
+}
+.connectWalletModal .highlightText {
+  color: linear-gradient(90deg, rgba(245,221,42,1) 0%, rgba(238,81,14,1) 68%);
 }

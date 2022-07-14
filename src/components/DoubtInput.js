@@ -213,7 +213,6 @@ const DoubtInput = (props) => {
       <Button variant="primary" onClick={() => setShow(true)}>
         Post your Doubt
       </Button>
-
       <Modal show={show} onHide={() => setShow(false)} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Enter Doubt</Modal.Title>

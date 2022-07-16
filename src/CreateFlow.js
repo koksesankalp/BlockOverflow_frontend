@@ -347,8 +347,8 @@ export const CreateFlow = () => {
               <br></br>
               <div className="row">
                 <div className="col">
-                  <h4>Decentralized & Secure rewards in <span className="highlightText">real-time.<br></br>Literally.</span>
-                  </h4>
+                  <h5>Get rewards for your Contribution in real-time.<br></br><span className="highlightText">LITERALLY!!</span>
+                  </h5>
                 </div>
                 <div className="col text-center">
                   <p>Connect your wallet</p>

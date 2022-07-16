@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
 import { Button, Modal } from "react-bootstrap";
-import "./CreateFlow.css";
 import { ethers } from "ethers";
-import abi from "./utils/StreamFlow.json";
+import { marked } from 'marked';
 
 //Components
 import Header from "./components/Header"
 import DoubtInput from "./components/DoubtInput";
 import { ShowAnsModal, PostAnswerModal } from "./components/Modals";
+import Metamasklogo from "./components/Metamasklogo";
 
-// Markdown
-import { marked } from 'marked';
+import Blockimg from './assets/images/BlockOverflow-192x192.png';
+import abi from "./utils/StreamFlow.json";
+
+import "./CreateFlow.css";
 const erc20_abi = require('./utils/ERC20_abi.json');
 
 // This abi is for testing purpose only. Use the StreamFlow ABI when deploying
@@ -55,7 +57,7 @@ async function updateExistingFlow(recipient, flowRate) {
     );
   } catch (error) {
     console.log(
-      "Hmmm, your transaction threw an error. Make sure that this stream does not already exist, and that you've entered a valid Ethereum address!"
+      "Your transaction threw an error. Make sure that this stream does not already exist, and that you've entered a valid Ethereum address!"
     );
     console.error(error);
   }
@@ -332,25 +334,31 @@ export const CreateFlow = () => {
         {/* Modal if wallet is not connected */}
         {/* <ConnectWalletModal showState={!walletConnected} */}
         <Modal show={!walletConnected} centered className="connectWalletModal">
-            <Modal.Title>
-              BlockOverflow
-            </Modal.Title>
-            <Modal.Body>
-              <div className="container">
-                <div className="row">
-                  <div className="col">
-                    <h4>Decentralized & Secure rewards in <span className="highlightText">real-time.<br></br>Literally.</span>
-                    </h4>
-                  </div>
-                  <div className="col">
-                    Select your wallet to connect from.
-                    <button id="connectWallet" className="button btn btn-primary my-2 my-sm-0" onClick={connectWallet}>
-                      Connect Wallet
-                    </button>
-                  </div>
+          <Modal.Body>
+            <div className="container">
+              <div className="row text-center">
+                <div className="col">
+                  <img src={Blockimg} alt="BlockOverflow_logo" width="50px" height="50px" />
+                </div>
+                <div className="col">
+                  <Metamasklogo />
                 </div>
               </div>
-            </Modal.Body>
+              <br></br>
+              <div className="row">
+                <div className="col">
+                  <h5>Get rewards for your Contribution in real-time.<br></br><span className="highlightText">LITERALLY!!</span>
+                  </h5>
+                </div>
+                <div className="col text-center">
+                  <p>Connect your wallet</p>
+                  <button id="connectWallet" className="btn btn-primary" onClick={connectWallet}>
+                    Connect
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Modal.Body>
         </Modal>
 
         {/* Modal 1 for displaying answers */}

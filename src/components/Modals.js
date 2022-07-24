@@ -13,6 +13,7 @@ const daiABI = require('../utils/daiABI.json');
 // modal for viewing answers
 export function ShowAnsModal(props) {
 
+    // Function to approve Transform from normal tokens to Supertokens
     async function approveTransformToken(amt) {
         const { ethereum } = window;
         const provider = new ethers.providers.Web3Provider(ethereum);
@@ -20,7 +21,7 @@ export function ShowAnsModal(props) {
             chainId: 4,
             provider: provider
         });
-        const signer = sf.createSigner({web3Provider: provider});
+        const signer = sf.createSigner({ web3Provider: provider });
         console.log(signer);
         const DAI = new ethers.Contract(
             "0x15F0Ca26781C3852f8166eD2ebce5D18265cceb7",
@@ -39,7 +40,8 @@ export function ShowAnsModal(props) {
             console.log(error);
         }
     }
-    
+
+    // ERC20 Upgrade function to supertoken
     async function upgradeAmount(amt) {
         const { ethereum } = window;
         const provider = new ethers.providers.Web3Provider(ethereum);
@@ -47,7 +49,7 @@ export function ShowAnsModal(props) {
             networkName: "rinkeby",
             provider: provider
         });
-        const signer = sf.createSigner({web3Provider: provider});
+        const signer = sf.createSigner({ web3Provider: provider });
         console.log(signer);
         const DAIx = await sf.loadSuperToken("fDAIx");
         try {
@@ -64,7 +66,7 @@ export function ShowAnsModal(props) {
         } catch (error) {
             console.log(error);
         }
-    }    
+    }
 
     async function upvoteCurrentAnswer(ansId) {
         const { ethereum } = window;
@@ -93,34 +95,32 @@ export function ShowAnsModal(props) {
     }
 
     return (
-        <>
-            <Modal show={props.showState} onHide={props.onHideState} size="lg">
-                <Modal.Header closeButton>
-                    <Modal.Title>Answers</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+        <Modal show={props.showState} onHide={props.onHideState} size="lg">
+            <Modal.Header closeButton>
+                <Modal.Title>Answers</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
                 <button onClick={() => { approveTransformToken(10) }} className="approvefunction">Approve;</button>
                 <button onClick={() => { upgradeAmount(10) }} className="upgradefunction">Upgrade;</button>
-                    {props.answerArray.map((answer, index) => {
-                        return (
-                            <div key={index}>
-                                <span className="totalUpvotes">{answer.upvotes}</span>&nbsp;
-                                <button onClick={() => { upvoteCurrentAnswer(answer.ansId) }} className="upvoteArrow">&#8679;</button>
-                                &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                                <span className="answerBody">Answer {answer.ansId}:-</span>
-                                <div className="mark-input"
-                                    dangerouslySetInnerHTML={{
-                                        __html: marked.parse(answer.answerbody),
-                                    }}>
-                                </div>
-                                <hr></hr>
-                                <br></br>
+                {props.answerArray.map((answer, index) => {
+                    return (
+                        <div key={index}>
+                            <span className="totalUpvotes">{answer.upvotes}</span>&nbsp;
+                            <button onClick={() => { upvoteCurrentAnswer(answer.ansId) }} className="upvoteArrow">&#8679;</button>
+                            &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                            <span className="answerBody">Answer {answer.ansId}:-</span>
+                            <div className="mark-input"
+                                dangerouslySetInnerHTML={{
+                                    __html: marked.parse(answer.answerbody),
+                                }}>
                             </div>
-                        )
-                    })}
-                </Modal.Body>
-            </Modal>
-        </>
+                            <hr></hr>
+                            <br></br>
+                        </div>
+                    )
+                })}
+            </Modal.Body>
+        </Modal>
     )
 }
 

@@ -9,6 +9,7 @@ import Header from "./components/Header"
 import DoubtInput from "./components/DoubtInput";
 import { ShowAnsModal, PostAnswerModal } from "./components/Modals";
 import Metamasklogo from "./components/Metamasklogo";
+import Slider from "./components/sidebar";
 
 import Blockimg from './assets/images/BlockOverflow-192x192.png';
 import abi from "./utils/StreamFlow.json";
@@ -301,7 +302,7 @@ export const CreateFlow = () => {
     <div className="position-sticky">
       {/* Custom Header component */}
       <Header connectWallet={connectWallet} currentAccount={currentAccount} balance={DAIxBalance} />
-      <div className="container">
+      <div className="container-fluid">
         {/* Custom Doubt component */}
         <DoubtInput getDoubt={getDoubt}
           contractAbi={contractAbi}
@@ -309,6 +310,14 @@ export const CreateFlow = () => {
           setIsButtonLoading={setIsButtonLoading}
           currentAccount={currentAccount} />
         <br></br>
+
+        <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSlider" aria-controls="offcanvasSlider">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
+          </svg>
+        </button>
+
+        <Slider />
 
         {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {

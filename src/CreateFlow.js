@@ -311,32 +311,23 @@ export const CreateFlow = () => {
           currentAccount={currentAccount} />
         <br></br>
 
-        <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSlider" aria-controls="offcanvasSlider">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
-          </svg>
-        </button>
-
         <Slider />
 
         {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {
           return (
-            <>
-              <div className="card" key={index}>
-                <div className="container">
-                  {/* <h3>Address: {doubt.address}</h3> */}
-                  <h3><b>{doubt.heading}</b></h3>
-                  <div dangerouslySetInnerHTML={{
-                    __html: marked.parse(doubt.description),
-                  }}></div>
-                  {/* <p>Ques_ID: {doubt.quesId.toString()}</p> */}
-                  <Button variant="primary" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
-                  <Button variant="primary" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
-                </div>
+            <div className="card mb-3" key={index}>
+              <div className="container">
+                {/* <h3>Address: {doubt.address}</h3> */}
+                <h3><b>{doubt.heading}</b></h3>
+                <div dangerouslySetInnerHTML={{
+                  __html: marked.parse(doubt.description),
+                }}></div>
+                {/* <p>Ques_ID: {doubt.quesId.toString()}</p> */}
+                <Button variant="primary" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
+                <Button variant="primary" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
               </div>
-              <br></br>
-            </>
+            </div>
           )
         })}
 

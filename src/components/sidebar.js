@@ -1,8 +1,12 @@
+import BlockoverflowLogo from "../assets/images/BlockOverflow-192x192.png";
+
 function Slider() {
     return (
         <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasSlider" aria-labelledby="offcanvasSliderLabel">
             <div className="offcanvas-header">
-                <h5 className="offcanvas-title" id="offcanvasSliderLabel">Offcanvas</h5>
+                <h5 className="offcanvas-title" id="offcanvasSliderLabel">
+                    <img src={BlockoverflowLogo} alt="BlockOverflow Logo" width={50} height={50} />
+                </h5>
                 <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div className="offcanvas-body">

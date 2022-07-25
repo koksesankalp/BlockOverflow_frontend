@@ -73,7 +73,7 @@ function Slider(props) {
                     My connected address - {`${props.currentAccount.substring(0, 8)}...${props.currentAccount.substring(38)}`}
                 </div>
                 <div class="alert alert-primary" role="alert">
-                    My Supertoken Balance - {`${props.balance.substring(0, 6)} DAIx`}
+                    My Supertoken Balance - {`${props.balance} DAIx`}
                 </div>
                 <div>
                     Upgrade your tokens to super tokens for streaming

@@ -16,7 +16,7 @@ const Header = (props) => {
           </a>
           BlockOverFlow
         </span>
-        <div className="collapse navbar-collapse position-relative" id="navbarNav">
+        {/* <div className="collapse navbar-collapse position-relative" id="navbarNav">
           {props.currentAccount === "" ? (
             <></>
           ) : (
@@ -29,7 +29,7 @@ const Header = (props) => {
               </Card>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </nav>
   )

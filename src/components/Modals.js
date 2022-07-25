@@ -7,66 +7,9 @@ import {
 import { ethers } from "ethers";
 import { useEffect, useState } from 'react';
 import { marked } from 'marked';
-import { Framework } from "@superfluid-finance/sdk-core";
-const daiABI = require('../utils/daiABI.json');
 
 // modal for viewing answers
 export function ShowAnsModal(props) {
-
-    // Function to approve Transform from normal tokens to Supertokens
-    async function approveTransformToken(amt) {
-        const { ethereum } = window;
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const sf = await Framework.create({
-            chainId: 4,
-            provider: provider
-        });
-        const signer = sf.createSigner({ web3Provider: provider });
-        console.log(signer);
-        const DAI = new ethers.Contract(
-            "0x15F0Ca26781C3852f8166eD2ebce5D18265cceb7",
-            daiABI,
-            signer
-        );
-        try {
-            console.log("Approving DAI");
-            let txn = await DAI.approve(
-                "0x745861AeD1EEe363b4AaA5F1994Be40b1e05Ff90", // address of fDAIx on Rinkeby testnet
-                ethers.utils.parseEther(amt.toString())
-            );
-            await txn.wait();
-            console.log("DAI has been approved");
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    // ERC20 Upgrade function to supertoken
-    async function upgradeAmount(amt) {
-        const { ethereum } = window;
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const sf = await Framework.create({
-            networkName: "rinkeby",
-            provider: provider
-        });
-        const signer = sf.createSigner({ web3Provider: provider });
-        console.log(signer);
-        const DAIx = await sf.loadSuperToken("fDAIx");
-        try {
-            console.log("Upgrading DAI to DAIx super token");
-            const amtToUpgrade = ethers.utils.parseEther(amt.toString());
-            const upgradeOperation = DAIx.upgrade({
-                amount: amtToUpgrade.toString()
-            });
-            console.log("1");
-            const upgradeTxn = await upgradeOperation.exec(signer);
-            await upgradeTxn.wait().then(function (tx) {
-                console.log(`Just upgraded a DAI token of amount ${amt}`);
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     async function upvoteCurrentAnswer(ansId) {
         const { ethereum } = window;
@@ -100,8 +43,7 @@ export function ShowAnsModal(props) {
                 <Modal.Title>Answers</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <button onClick={() => { approveTransformToken(10) }} className="approvefunction">Approve;</button>
-                <button onClick={() => { upgradeAmount(10) }} className="upgradefunction">Upgrade;</button>
+                {/* <button onClick={() => { approveTransformToken(10) }} className="approvefunction">Approve;</button> */}
                 {props.answerArray.map((answer, index) => {
                     return (
                         <div key={index}>

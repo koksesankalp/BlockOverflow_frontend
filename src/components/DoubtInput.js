@@ -210,7 +210,7 @@ const DoubtInput = (props) => {
 
   return (
     <>
-      <Button variant="primary" onClick={() => setShow(true)}>
+      <Button variant="primary" className="mb-3 mt-3" onClick={() => setShow(true)}>
         Post your Doubt
       </Button>
       <Modal show={show} onHide={() => setShow(false)} size="lg">

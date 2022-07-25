@@ -311,7 +311,7 @@ export const CreateFlow = () => {
           currentAccount={currentAccount} />
         <br></br>
 
-        <Slider />
+        <Slider currentAccount = {currentAccount} balance = {DAIxBalance} />
 
         {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {
@@ -324,8 +324,8 @@ export const CreateFlow = () => {
                   __html: marked.parse(doubt.description),
                 }}></div>
                 {/* <p>Ques_ID: {doubt.quesId.toString()}</p> */}
-                <Button variant="primary" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
-                <Button variant="primary" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
+                <Button variant="primary" className="me-3 mb-2" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
+                <Button variant="primary" className="mb-2" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
               </div>
             </div>
           )

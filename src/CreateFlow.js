@@ -9,6 +9,7 @@ import Header from "./components/Header"
 import DoubtInput from "./components/DoubtInput";
 import { ShowAnsModal, PostAnswerModal } from "./components/Modals";
 import Metamasklogo from "./components/Metamasklogo";
+import Slider from "./components/sidebar";
 
 import Blockimg from './assets/images/BlockOverflow-192x192.png';
 import abi from "./utils/StreamFlow.json";
@@ -301,7 +302,7 @@ export const CreateFlow = () => {
     <div className="position-sticky">
       {/* Custom Header component */}
       <Header connectWallet={connectWallet} currentAccount={currentAccount} balance={DAIxBalance} />
-      <div className="container">
+      <div className="container-fluid">
         {/* Custom Doubt component */}
         <DoubtInput getDoubt={getDoubt}
           contractAbi={contractAbi}
@@ -310,24 +311,23 @@ export const CreateFlow = () => {
           currentAccount={currentAccount} />
         <br></br>
 
+        <Slider currentAccount = {currentAccount} balance = {DAIxBalance} />
+
         {/* Displaying all of the doubts posted on the contract */}
         {allDoubts.map((doubt, index) => {
           return (
-            <>
-              <div className="card" key={index}>
-                <div className="container">
-                  {/* <h3>Address: {doubt.address}</h3> */}
-                  <h3><b>{doubt.heading}</b></h3>
-                  <div dangerouslySetInnerHTML={{
-                    __html: marked.parse(doubt.description),
-                  }}></div>
-                  {/* <p>Ques_ID: {doubt.quesId.toString()}</p> */}
-                  <Button variant="primary" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
-                  <Button variant="primary" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
-                </div>
+            <div className="card mb-3" key={index}>
+              <div className="container">
+                {/* <h3>Address: {doubt.address}</h3> */}
+                <h3><b>{doubt.heading}</b></h3>
+                <div dangerouslySetInnerHTML={{
+                  __html: marked.parse(doubt.description),
+                }}></div>
+                {/* <p>Ques_ID: {doubt.quesId.toString()}</p> */}
+                <Button variant="primary" className="me-3 mb-2" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
+                <Button variant="primary" className="mb-2" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
               </div>
-              <br></br>
-            </>
+            </div>
           )
         })}
 

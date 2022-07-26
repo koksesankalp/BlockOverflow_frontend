@@ -60,6 +60,38 @@ function Slider(props) {
         }
     }
 
+    async function downgradeAmount(amt) {
+        const { ethereum } = window;
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const sf = await Framework.create({
+            networkName: "rinkeby",
+            provider: provider
+        });
+        const signer = sf.createSigner({ web3Provider: provider });
+        console.log(signer);
+        const DAIx = await sf.loadSuperToken("0x745861AeD1EEe363b4AaA5F1994Be40b1e05Ff90");
+        console.log(DAIx.address);
+        try {
+            console.log(`Downgrading $${amt} fDAIx...`);
+            const amtToDowngrade = ethers.utils.parseEther(amt.toString());
+            const downgradeOperation = DAIx.downgrade({
+                amount: amtToDowngrade.toString()
+            });
+            const downgradeTxn = await downgradeOperation.exec(signer);
+            await downgradeTxn.wait().then(function (tx) {
+                console.log(
+                  `
+                  Congrats - you've just downgraded DAIx to DAI!
+                  You can see this tx at https://goerli.etherscan.io/tx/${tx.transactionHash}
+                  Network: Rinkeby
+                `
+                );
+              });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasSlider" aria-labelledby="offcanvasSliderLabel">
             <div className="offcanvas-header">
@@ -78,9 +110,12 @@ function Slider(props) {
                 <div>
                     Upgrade your tokens to super tokens for streaming
                 </div>
-                <div className="dropdown mt-3">
-                    <button className="btn btn-primary" onClick={() => { upgradeAmount(10) }}>
-                        Upgrade tokens
+                <div className="d-flex flex-col mt-3">
+                    <button className="btn btn-outline-primary mx-1" onClick={() => { upgradeAmount(10) }}>
+                        Upgrade DAI to DAIx
+                    </button>
+                    <button className="btn btn-outline-primary mx-1" onClick={() => { downgradeAmount(10) }}>
+                        Downgrade DAIx to DAI
                     </button>
                 </div>
             </div>

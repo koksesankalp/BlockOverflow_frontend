@@ -80,48 +80,78 @@ function Slider(props) {
             const downgradeTxn = await downgradeOperation.exec(signer);
             await downgradeTxn.wait().then(function (tx) {
                 console.log(
-                  `
+                    `
                   Congrats - you've just downgraded DAIx to DAI!                
                   Network: Rinkeby
                 `
                 );
-              });
+            });
         } catch (error) {
             console.log(error);
         }
     }
 
     return (
-        <div className="offcanvas offcanvas-start" style={{ backgroundColor: "black", color: "white"}} tabIndex="-1" id="offcanvasSlider" aria-labelledby="offcanvasSliderLabel">
-            <div className="offcanvas-header">
-                <h5 className="offcanvas-title" id="offcanvasSliderLabel">
+        <>
+            <div>
+                {/* <h5>
                     <img src={BlockoverflowLogo} alt="BlockOverflow Logo" width={50} height={50} />
-                </h5>
-                <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </h5> */}
+                <div className="offcanvas-body">
+                    <div className="alert alert-warning px-1" role="alert">
+                        Address - {`${props.currentAccount.substring(0, 8)}...${props.currentAccount.substring(38)}`}
+                    </div>
+                    <div className="alert alert-primary" role="alert">
+                        DAIx - {`${parseFloat(props.ERC20xbalance).toFixed(2)}`}
+                    </div>
+                    <div className="alert alert-primary" role="alert">
+                        DAI - {`${parseFloat(props.ERC20balance).toFixed(2)}`}
+                    </div>
+                    <div>
+                        Upgrade your tokens to super tokens for streaming
+                    </div>
+                    <div className="d-flex flex-col mt-3">
+                        <button className="btn btn-outline-primary mx-1" onClick={() => { upgradeAmount(10) }}>
+                            Upgrade DAI to DAIx
+                        </button>
+                        <button className="btn btn-outline-primary mx-1" onClick={() => { downgradeAmount(10) }}>
+                            Downgrade DAIx to DAI
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div className="offcanvas-body">
-                <div className="alert alert-warning" role="alert">
-                    My connected address - {`${props.currentAccount.substring(0, 8)}...${props.currentAccount.substring(38)}`}
+
+            {/* <div className="offcanvas offcanvas-start" style={{ backgroundColor: "black", color: "white" }} tabIndex="-1" id="offcanvasSlider" aria-labelledby="offcanvasSliderLabel">
+                <div className="offcanvas-header">
+                    <h5 className="offcanvas-title" id="offcanvasSliderLabel">
+                        <img src={BlockoverflowLogo} alt="BlockOverflow Logo" width={50} height={50} />
+                    </h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div className="alert alert-primary" role="alert">
-                    My Supertoken Balance - {`${parseFloat(props.ERC20xbalance).toFixed(2)} DAIx`}
+                <div className="offcanvas-body">
+                    <div className="alert alert-warning" role="alert">
+                        My connected address - {`${props.currentAccount.substring(0, 8)}...${props.currentAccount.substring(38)}`}
+                    </div>
+                    <div className="alert alert-primary" role="alert">
+                        My Supertoken Balance - {`${parseFloat(props.ERC20xbalance).toFixed(2)} DAIx`}
+                    </div>
+                    <div className="alert alert-primary" role="alert">
+                        My Balance - {`${parseFloat(props.ERC20balance).toFixed(2)} DAI`}
+                    </div>
+                    <div>
+                        Upgrade your tokens to super tokens for streaming
+                    </div>
+                    <div className="d-flex flex-col mt-3">
+                        <button className="btn btn-outline-primary mx-1" onClick={() => { upgradeAmount(10) }}>
+                            Upgrade DAI to DAIx
+                        </button>
+                        <button className="btn btn-outline-primary mx-1" onClick={() => { downgradeAmount(10) }}>
+                            Downgrade DAIx to DAI
+                        </button>
+                    </div>
                 </div>
-                <div className="alert alert-primary" role="alert">
-                    My Balance - {`${parseFloat(props.ERC20balance).toFixed(2)} DAI`}
-                </div>
-                <div>
-                    Upgrade your tokens to super tokens for streaming
-                </div>
-                <div className="d-flex flex-col mt-3">
-                    <button className="btn btn-outline-primary mx-1" onClick={() => { upgradeAmount(10) }}>
-                        Upgrade DAI to DAIx
-                    </button>
-                    <button className="btn btn-outline-primary mx-1" onClick={() => { downgradeAmount(10) }}>
-                        Downgrade DAIx to DAI
-                    </button>
-                </div>
-            </div>
-        </div>
+            </div> */}
+        </>
     )
 }
 

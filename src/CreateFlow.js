@@ -62,7 +62,6 @@ async function updateExistingFlow(recipient, flowRate) {
     );
     console.error(error);
   }
-
 }
 
 // exporting component
@@ -310,82 +309,91 @@ export const CreateFlow = () => {
 
   // UI code
   return (
-    <div className="position-sticky pb-3" style={{ backgroundColor: "#290133"}}>
+    <div className="position-sticky pb-3" style={{ backgroundColor: "#290133" }}>
       {/* Custom Header component */}
       <Header connectWallet={connectWallet} currentAccount={currentAccount} balance={ERC20xBalance} />
       <div className="container-fluid">
-        {/* Custom Doubt component */}
         <DoubtInput getDoubt={getDoubt}
           contractAbi={contractAbi}
           contractAddress={contractaddress}
           setIsButtonLoading={setIsButtonLoading}
           currentAccount={currentAccount} />
         <br></br>
-
-        <Slider currentAccount = {currentAccount} ERC20xbalance = {ERC20xBalance} ERC20balance = {ERC20Balance}/>
-
-        {/* Displaying all of the doubts posted on the contract */}
-        {allDoubts.map((doubt, index) => {
-          return (
-            <div className="card mb-3" key={index} style={{ backgroundColor: "transparent", color:"white", borderColor: "#4BB000", borderRadius: "10px"}}>
-              <div className="container my-3">
-                <h3><b>{doubt.heading}</b></h3>
-                <div dangerouslySetInnerHTML={{
-                  __html: marked.parse(doubt.description),
-                }}></div>
-                <Button variant="primary" className="me-3 mb-2" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
-                <Button variant="primary" className="mb-2" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
-              </div>
-            </div>
-          )
-        })}
-
-        {/* Modal if wallet is not connected */}
-        {/* <ConnectWalletModal showState={!walletConnected} */}
-        <Modal show={!walletConnected} centered className="connectWalletModal">
-          <Modal.Body>
-            <div className="container">
-              <div className="row text-center">
-                <div className="col">
-                  <img src={Blockimg} alt="BlockOverflow_logo" width="50px" height="50px" />
-                </div>
-                <div className="col">
-                  <Metamasklogo />
-                </div>
-              </div>
-              <br></br>
-              <div className="row">
-                <div className="col">
-                  <h5>Get rewards for your Contribution in real-time.<br></br><span className="highlightText">LITERALLY!!</span>
-                  </h5>
-                </div>
-                <div className="col text-center">
-                  <p>Connect your wallet</p>
-                  <button id="connectWallet" className="btn btn-primary" onClick={connectWallet}>
-                    Connect
-                  </button>
-                </div>
-              </div>
-            </div>
-          </Modal.Body>
-        </Modal>
-
-        {/* Modal 1 for displaying answers */}
-        <ShowAnsModal showState={showAnswerModal}
-          onHideState={handleClose1}
-          answerArray={allAnswers}
-          currentDoubtId={currentDoubtId}
-          contractAbi={contractAbi}
-          contractaddress={contractaddress} />
-
-        {/* Modal2 for Posting answers */}
-        <PostAnswerModal showState={showAnswerForm}
-          onHideState={handleClose2}
-          setIsButtonLoading={setIsButtonLoading}
-          currentDoubtId={currentDoubtId}
-          contractAbi={contractAbi}
-          contractaddress={contractaddress} />
       </div>
+
+      <div className="row gx-0 px-1">
+        <div className="col-3" style={{ borderRight: "3px solid green" }}>
+          <Slider currentAccount={currentAccount} ERC20xbalance={ERC20xBalance} ERC20balance={ERC20Balance} />
+        </div>
+        <div className="col-9 px-3">
+          <div className="container-fluid">
+            {/* Custom Doubt component */}
+
+            {/* Displaying all of the doubts posted on the contract */}
+            {allDoubts.map((doubt, index) => {
+              return (
+                <div className="card mb-3" key={index} style={{ backgroundColor: "transparent", color: "white", borderColor: "#4BB000", borderRadius: "10px" }}>
+                  <div className="container my-3 mx-2">
+                    <h3><b>{doubt.heading}</b></h3>
+                    <div dangerouslySetInnerHTML={{
+                      __html: marked.parse(doubt.description),
+                    }}></div>
+                    <Button variant="primary" className="me-3 mb-2" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
+                    <Button variant="primary" className="mb-2" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
+                  </div>
+                </div>
+              )
+            })}
+
+            {/* Modal if wallet is not connected */}
+            {/* <ConnectWalletModal showState={!walletConnected} */}
+            <Modal show={!walletConnected} centered className="connectWalletModal">
+              <Modal.Body>
+                <div className="container">
+                  <div className="row text-center">
+                    <div className="col">
+                      <img src={Blockimg} alt="BlockOverflow_logo" width="50px" height="50px" />
+                    </div>
+                    <div className="col">
+                      <Metamasklogo />
+                    </div>
+                  </div>
+                  <br></br>
+                  <div className="row">
+                    <div className="col">
+                      <h5>Get rewards for your Contribution in real-time.<br></br><span className="highlightText">LITERALLY!!</span>
+                      </h5>
+                    </div>
+                    <div className="col text-center">
+                      <p>Connect your wallet</p>
+                      <button id="connectWallet" className="btn btn-primary" onClick={connectWallet}>
+                        Connect
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </Modal.Body>
+            </Modal>
+
+            {/* Modal 1 for displaying answers */}
+            <ShowAnsModal showState={showAnswerModal}
+              onHideState={handleClose1}
+              answerArray={allAnswers}
+              currentDoubtId={currentDoubtId}
+              contractAbi={contractAbi}
+              contractaddress={contractaddress} />
+
+            {/* Modal2 for Posting answers */}
+            <PostAnswerModal showState={showAnswerForm}
+              onHideState={handleClose2}
+              setIsButtonLoading={setIsButtonLoading}
+              currentDoubtId={currentDoubtId}
+              contractAbi={contractAbi}
+              contractaddress={contractaddress} />
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };

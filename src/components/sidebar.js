@@ -81,8 +81,7 @@ function Slider(props) {
             await downgradeTxn.wait().then(function (tx) {
                 console.log(
                   `
-                  Congrats - you've just downgraded DAIx to DAI!
-                  You can see this tx at https://goerli.etherscan.io/tx/${tx.transactionHash}
+                  Congrats - you've just downgraded DAIx to DAI!                
                   Network: Rinkeby
                 `
                 );
@@ -93,7 +92,7 @@ function Slider(props) {
     }
 
     return (
-        <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasSlider" aria-labelledby="offcanvasSliderLabel">
+        <div className="offcanvas offcanvas-start" style={{ backgroundColor: "black", color: "white"}} tabIndex="-1" id="offcanvasSlider" aria-labelledby="offcanvasSliderLabel">
             <div className="offcanvas-header">
                 <h5 className="offcanvas-title" id="offcanvasSliderLabel">
                     <img src={BlockoverflowLogo} alt="BlockOverflow Logo" width={50} height={50} />
@@ -101,11 +100,14 @@ function Slider(props) {
                 <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div className="offcanvas-body">
-                <div class="alert alert-warning" role="alert">
+                <div className="alert alert-warning" role="alert">
                     My connected address - {`${props.currentAccount.substring(0, 8)}...${props.currentAccount.substring(38)}`}
                 </div>
-                <div class="alert alert-primary" role="alert">
-                    My Supertoken Balance - {`${props.balance} DAIx`}
+                <div className="alert alert-primary" role="alert">
+                    My Supertoken Balance - {`${parseFloat(props.ERC20xbalance).toFixed(2)} DAIx`}
+                </div>
+                <div className="alert alert-primary" role="alert">
+                    My Balance - {`${parseFloat(props.ERC20balance).toFixed(2)} DAI`}
                 </div>
                 <div>
                     Upgrade your tokens to super tokens for streaming

@@ -355,7 +355,7 @@ export const CreateFlow = () => {
                   <img src={block_2_gif} className="d-block w-75" alt='...' />
                 </div>
                 <div className="text mt-5 pt-5 text-center">
-                  <h2>Conribute with your opinions and let the crowd decide for how long you are worthy</h2>
+                  <h2>Contribute with your opinions and let the crowd decide for how long you are worthy</h2>
                   <h3>Will you be overthrown by a new worthy? Keeping the crowd with you is the game</h3>
                 </div>
               </div>

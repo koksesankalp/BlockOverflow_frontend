@@ -9,20 +9,20 @@ function Slider(props) {
         const { ethereum } = window;
         const provider = new ethers.providers.Web3Provider(ethereum);
         const sf = await Framework.create({
-            chainId: 4,
+            chainId: 5,
             provider: provider
         });
         const signer = sf.createSigner({ web3Provider: provider });
         console.log(signer);
         const DAI = new ethers.Contract(
-            "0x15F0Ca26781C3852f8166eD2ebce5D18265cceb7",
+            "0x88271d333C72e51516B67f5567c728E702b3eeE8",
             daiABI,
             signer
         );
         try {
             console.log("Approving DAI");
             let txn = await DAI.approve(
-                "0x745861AeD1EEe363b4AaA5F1994Be40b1e05Ff90", // address of fDAIx on Rinkeby testnet
+                "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00", // address of fDAIx on Goreli testnet
                 ethers.utils.parseEther(amt.toString())
             );
             await txn.wait();

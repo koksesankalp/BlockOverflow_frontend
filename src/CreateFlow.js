@@ -34,7 +34,7 @@ async function updateExistingFlow(recipient, flowRate) {
     chainId: Number(chainId),
     provider: provider
   });
-  const DAIx = "0x745861AeD1EEe363b4AaA5F1994Be40b1e05Ff90";
+  const DAIx = "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00";
   try {
     const updateFlowOperation = sf.cfaV1.updateFlow({
       receiver: recipient,
@@ -96,7 +96,8 @@ export const CreateFlow = () => {
     setShowAnswerForm(true);
   };
 
-  const contractaddress = "0x9FC6B3F3666cBaF8E37948B05C4aB680Eb0988B4";
+  const contractaddress = "0x78e9Ec8CfC4971499702d9B409cb8Cde53Bc2664";
+  const superToken_address = "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00" // currently using only DAIx
   // Use this contract address for testing purpose only
   // const contractaddress = "0x0FE62c7A782c050Cafe8020Ce138c59657F04B48";
   const contractAbi = abi.abi; // use this while submitting the project.
@@ -129,9 +130,9 @@ export const CreateFlow = () => {
       });
       console.log("Connected", accounts[0]);
       const chainId = await window.ethereum.request({ method: "eth_chainId" });
-      if (chainId !== "0x4") {
-        alert("Please Switch the network to rinkeby")
-      }
+      // if (chainId !== "0x4") {
+      //   alert("Please Switch the network to rinkeby")
+      // }
       console.log(chainId);
       setCurrentAccount(accounts[0]);
       setWalletConnected(true);
@@ -162,7 +163,7 @@ export const CreateFlow = () => {
     });
 
     // Getting DAI balance
-    const DAI_token = "0x15F0Ca26781C3852f8166eD2ebce5D18265cceb7";
+    const DAI_token = "0x88271d333C72e51516B67f5567c728E702b3eeE8";
     const DAI_contract = new ethers.Contract(DAI_token, erc20_abi, provider);
     DAI_contract.balanceOf(accounts[0]).then((balance) => {
       console.log("DAI Balance: ", ethers.utils.formatEther(balance));
@@ -170,7 +171,7 @@ export const CreateFlow = () => {
     });
 
     // Getting DAIx balance
-    const DAIx_token = "0x745861AeD1EEe363b4AaA5F1994Be40b1e05Ff90";
+    const DAIx_token = superToken_address;
     const DAIx_contract = new ethers.Contract(DAIx_token, erc20_abi, provider);
     DAIx_contract.balanceOf(accounts[0]).then((balance) => {
       setERC20xBalance(ethers.utils.formatEther(balance));
@@ -180,9 +181,9 @@ export const CreateFlow = () => {
     let chainId = chain;
     console.log("chain ID:", chain);
     console.log("global Chain Id:", chainId);
-    if (chainId !== "0x4") {
-      alert("Please Switch the network to rinkeby");
-    }
+    // if (chainId !== "0x4") {
+    //   alert("Please Switch the network to rinkeby");
+    // }
     if (accounts.length !== 0) {
       const account = accounts[0];
       console.log("Found an authorized account:", account);
@@ -321,6 +322,7 @@ export const CreateFlow = () => {
         <DoubtInput getDoubt={getDoubt}
           contractAbi={contractAbi}
           contractAddress={contractaddress}
+          superToken={superToken_address}
           setIsButtonLoading={setIsButtonLoading}
           currentAccount={currentAccount} />
         <br></br>
@@ -328,7 +330,10 @@ export const CreateFlow = () => {
 
       <div className="row gx-0 px-1">
         <div className="col-3" style={{ borderRight: "3px solid green" }}>
-          <Slider currentAccount={currentAccount} ERC20xbalance={ERC20xBalance} ERC20balance={ERC20Balance} />
+          <Slider currentAccount={currentAccount}
+            ERC20xbalance={ERC20xBalance}
+            ERC20balance={ERC20Balance}
+            superToken={superToken_address} />
         </div>
         <div className="col-9 px-3">
           <div className="container-fluid">

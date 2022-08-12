@@ -38,7 +38,7 @@ async function updateExistingFlow(recipient, flowRate) {
     provider: provider
   });
 
-  const DAIx = "0x745861AeD1EEe363b4AaA5F1994Be40b1e05Ff90";
+  const DAIx = "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00";
 
   try {
     const updateFlowOperation = sf.cfaV1.updateFlow({

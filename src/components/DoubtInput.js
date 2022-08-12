@@ -48,7 +48,7 @@ const DoubtInput = (props) => {
       provider: provider
     });
 
-    const DAIx = "0x745861AeD1EEe363b4AaA5F1994Be40b1e05Ff90"; // DAIx address for Rinkeby
+    const DAIx = props.superToken; // DAIx address for Goreli
 
     try {
       const createFlowOperation = sf.cfaV1.createFlow({
@@ -83,8 +83,8 @@ const DoubtInput = (props) => {
     const { ethereum } = window;
     try {
       if (ethereum) {
-        // const provider = new ethers.providers.Web3Provider(ethereum);
-        const provider = new ethers.providers.AlchemyProvider("rinkeby", "iNNs24vbZthCgoM1DdYfs44KxP-re35d");
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        // const provider = new ethers.providers.AlchemyProvider("goreli", "TcxYOVz9rjQWmJhpjux43lFe0s1usDaa");
         // const signer = provider.getSigner();
         const chainId = await window.ethereum.request({ method: "eth_chainId" });
 
@@ -93,7 +93,7 @@ const DoubtInput = (props) => {
           provider: provider
         });
         const myflow = await sf.cfaV1.getFlow({
-          superToken: "0x745861AeD1EEe363b4AaA5F1994Be40b1e05Ff90",
+          superToken: props.superToken,
           sender: props.currentAccount.toString(),
           receiver: contractaddress,
           providerOrSigner: provider

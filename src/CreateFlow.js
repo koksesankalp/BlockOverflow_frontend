@@ -73,6 +73,7 @@ export const CreateFlow = () => {
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [currentAccount, setCurrentAccount] = useState(""); // current logged in account address
   const [walletConnected, setWalletConnected] = useState(false);
+  const [currentNetworkId, setCurrentNetworkId] = useState("");
   const [allDoubts, setAllDoubts] = useState([]); // set an array of all doubts
   const [allAnswers, setAllAnswers] = useState([]); // set an array of all answers
   const [currentDoubtId, setCurrentDoubtId] = useState(0); // storing the current access doubt ID for further functions
@@ -117,6 +118,35 @@ export const CreateFlow = () => {
     return contract;
   }
 
+  const changeNetwork = async (chainId) => {
+    // switching to Goreli network, if network not added to wallet then adding it
+    try {
+      console.log("Chainging network...");
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: chainId }]
+      });
+      console.log("Network changed...");
+    } catch (switchError) {
+      console.log("Adding network...");
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [{
+          chainId: "0x5",
+          rpcUrls: ["https://goerli.infura.io/v3/"],
+          chainName: "Goerli Test Network",
+          nativeCurrency: {
+            name: "GoerliETH",
+            symbol: "GoerliETH",
+            decimals: 18
+          },
+          blockExplorerUrls: ["https://goerli.etherscan.io"]
+        }]
+      });
+      console.log("Network added");
+    }
+  }
+
   // Function to connect the wallet.
   const connectWallet = async () => {
     try {
@@ -130,9 +160,9 @@ export const CreateFlow = () => {
       });
       console.log("Connected", accounts[0]);
       const chainId = await window.ethereum.request({ method: "eth_chainId" });
-      // if (chainId !== "0x4") {
-      //   alert("Please Switch the network to rinkeby")
-      // }
+      if (chainId != "0x5") {
+        await changeNetwork("0x5");
+      }
       console.log(chainId);
       setCurrentAccount(accounts[0]);
       setWalletConnected(true);
@@ -155,8 +185,13 @@ export const CreateFlow = () => {
       console.log("We have the ethereum object", ethereum);
     }
     const accounts = await ethereum.request({ method: "eth_accounts" });
-    const chain = await window.ethereum.request({ method: "eth_chainId" });
+    const chainId = await window.ethereum.request({ method: "eth_chainId" });
+    console.log(chainId);
     const provider = new ethers.providers.Web3Provider(ethereum);
+    if (chainId != "0x5") {
+      console.log("This is not goreli network");
+      await changeNetwork("0x5");
+    }
     provider.getBalance(accounts[0]).then((balance) => {
       setUserBalance(ethers.utils.formatEther(balance));
       console.log(userBalance); // printing the balance of the current connected account
@@ -178,12 +213,8 @@ export const CreateFlow = () => {
       console.log("DAIx Balance: ", ethers.utils.formatEther(balance));
     });
 
-    let chainId = chain;
-    console.log("chain ID:", chain);
+    console.log("chain ID:", chainId);
     console.log("global Chain Id:", chainId);
-    // if (chainId !== "0x4") {
-    //   alert("Please Switch the network to rinkeby");
-    // }
     if (accounts.length !== 0) {
       const account = accounts[0];
       console.log("Found an authorized account:", account);
@@ -327,6 +358,7 @@ export const CreateFlow = () => {
           currentAccount={currentAccount} />
         <br></br>
       </div>
+      <button className="btn btn-primary" onClick={() => changeNetwork("0x5")}>Goreli</button>
 
       <div className="row gx-0 px-1">
         <div className="col-3" style={{ borderRight: "3px solid green" }}>

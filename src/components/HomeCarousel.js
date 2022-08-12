@@ -6,10 +6,10 @@ import logo_gif from '../assets/images/logo_gif.gif';
 const CarouselBanner = () => {
     return (
         <div className="container">
-            <div id="carouselExampleControls" class="carousel slide my-5" data-bs-ride="carousel">
-                <div class="carousel-inner" style={{ color: "white", height: "70vh" }}>
+            <div id="carouselExampleControls" className="carousel slide my-5" data-bs-ride="carousel">
+                <div className="carousel-inner" style={{ color: "white", height: "70vh" }}>
 
-                    <div class="carousel-item active">
+                    <div className="carousel-item active">
                         <div className="d-flex flex-row justify-content-center px-5 mx-5">
                             <div className="imgae">
                                 <img src={logo_gif} className="d-block" style={{ width: "70vh" }} alt='...' />
@@ -21,7 +21,7 @@ const CarouselBanner = () => {
                         </div>
                     </div>
 
-                    <div class="carousel-item">
+                    <div className="carousel-item">
                         <div className="d-flex flex-row justify-content-center px-5 mx-5">
                             <div className="imgae">
                                 <img src={block_1_gif} className="d-block w-75" alt='...' />
@@ -33,7 +33,7 @@ const CarouselBanner = () => {
                         </div>
                     </div>
 
-                    <div class="carousel-item">
+                    <div className="carousel-item">
                         <div className="d-flex flex-row justify-content-center px-5 mx-5">
                             <div className="imgae">
                                 <img src={block_2_gif} className="d-block w-75" alt='...' />
@@ -45,7 +45,7 @@ const CarouselBanner = () => {
                         </div>
                     </div>
 
-                    <div class="carousel-item">
+                    <div className="carousel-item">
                         <div className="d-flex flex-row justify-content-center px-5 mx-5">
                             <div className="imgae">
                                 <img src={cylinder_1_gif} className="d-block w-75" alt='...' />
@@ -57,13 +57,13 @@ const CarouselBanner = () => {
                         </div>
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
+                <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
+                <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Next</span>
                 </button>
             </div>
         </div>

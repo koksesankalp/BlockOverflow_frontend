@@ -358,7 +358,6 @@ export const CreateFlow = () => {
           currentAccount={currentAccount} />
         <br></br>
       </div>
-      <button className="btn btn-primary" onClick={() => changeNetwork("0x5")}>Goreli</button>
 
       <div className="row gx-0 px-1">
         <div className="col-3" style={{ borderRight: "3px solid green" }}>

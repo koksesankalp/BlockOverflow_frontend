@@ -48,7 +48,7 @@ const DoubtInput = (props) => {
       provider: provider
     });
 
-    const DAIx = "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00"; // DAIx address for Goreli
+    const DAIx = props.superToken; // DAIx address for Goreli
 
     try {
       const createFlowOperation = sf.cfaV1.createFlow({
@@ -93,7 +93,7 @@ const DoubtInput = (props) => {
           provider: provider
         });
         const myflow = await sf.cfaV1.getFlow({
-          superToken: "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00",
+          superToken: props.superToken,
           sender: props.currentAccount.toString(),
           receiver: contractaddress,
           providerOrSigner: provider

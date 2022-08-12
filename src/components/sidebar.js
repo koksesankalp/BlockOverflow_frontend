@@ -22,7 +22,7 @@ function Slider(props) {
         try {
             console.log("Approving DAI");
             let txn = await DAI.approve(
-                "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00", // address of fDAIx on Goreli testnet
+                props.superToken, // address of fDAIx on Goreli testnet
                 ethers.utils.parseEther(amt.toString())
             );
             await txn.wait();

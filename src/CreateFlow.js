@@ -118,34 +118,6 @@ export const CreateFlow = () => {
     return contract;
   }
 
-  // Function to connect the wallet.
-  const connectWallet = async () => {
-    try {
-      const { ethereum } = window;
-      if (!ethereum) {
-        alert("Get MetaMask!");
-        return;
-      }
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts"
-      });
-      console.log("Connected", accounts[0]);
-      const chainId = await window.ethereum.request({ method: "eth_chainId" });
-      if (chainId !== "0x5") {
-        await changeNetwork(chainId);
-      }
-      console.log(chainId);
-      setCurrentAccount(accounts[0]);
-      setWalletConnected(true);
-      // let account = currentAccount;
-      // Setup listener! This is for the case where a user comes to our site
-      // and connected their wallet for the first time.
-      // setupEventListener()
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const changeNetwork = async (chainId) => {
     // switching to Goreli network, if network not added to wallet then adding it
     try {
@@ -175,6 +147,34 @@ export const CreateFlow = () => {
     }
   }
 
+  // Function to connect the wallet.
+  const connectWallet = async () => {
+    try {
+      const { ethereum } = window;
+      if (!ethereum) {
+        alert("Get MetaMask!");
+        return;
+      }
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts"
+      });
+      console.log("Connected", accounts[0]);
+      const chainId = await window.ethereum.request({ method: "eth_chainId" });
+      if (chainId != "0x5") {
+        await changeNetwork("0x5");
+      }
+      console.log(chainId);
+      setCurrentAccount(accounts[0]);
+      setWalletConnected(true);
+      // let account = currentAccount;
+      // Setup listener! This is for the case where a user comes to our site
+      // and connected their wallet for the first time.
+      // setupEventListener()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // function to check if wallet is connected or not
   const checkIfWalletIsConnected = async () => {
     const { ethereum } = window;
@@ -188,9 +188,9 @@ export const CreateFlow = () => {
     const chainId = await window.ethereum.request({ method: "eth_chainId" });
     console.log(chainId);
     const provider = new ethers.providers.Web3Provider(ethereum);
-    if (chainId != 0x5) {
+    if (chainId != "0x5") {
       console.log("This is not goreli network");
-      await changeNetwork(chainId);
+      await changeNetwork("0x5");
     }
     provider.getBalance(accounts[0]).then((balance) => {
       setUserBalance(ethers.utils.formatEther(balance));
@@ -358,6 +358,7 @@ export const CreateFlow = () => {
           currentAccount={currentAccount} />
         <br></br>
       </div>
+      <button className="btn btn-primary" onClick={() => changeNetwork("0x5")}>Goreli</button>
 
       <div className="row gx-0 px-1">
         <div className="col-3" style={{ borderRight: "3px solid green" }}>

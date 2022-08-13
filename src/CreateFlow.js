@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Framework } from "@superfluid-finance/sdk-core";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { ethers } from "ethers";
 import { marked } from 'marked';
 
@@ -375,6 +375,20 @@ export const CreateFlow = () => {
 
             {/* Displaying all of the doubts posted on the contract */}
             {allDoubts.map((doubt, index) => {
+
+              const insertOverlay = () => {
+                let bounty = parseInt(doubt.bounty_amt, 16);
+                return (
+                  <Tooltip id="tooltip-bottom">
+                    <div className="container">
+                      <p>Key: {index}</p>
+                      <p>From: {doubt.address.substring(0, 6)}...{doubt.address.substring(36)}</p>
+                      <p>Current Winner: {doubt.current_winner.substring(0, 6)}...{doubt.current_winner.substring(36)}</p>
+                    </div>
+                  </Tooltip>
+                )
+              }
+
               return (
                 <div className="card mb-3" key={index}
                   style={{
@@ -383,11 +397,18 @@ export const CreateFlow = () => {
                     borderColor: "#4BB000",
                     borderRadius: "10px"
                   }}>
-                  <div className="container my-3 mx-2">
+                  <div className="container my-3 px-3">
                     <div className="d-flex justify-content-between">
                       <div><h3><b>{doubt.heading}</b></h3></div>
                       <div>
-                        Current Winner - {doubt.current_winner.substring(0, 8)}...{doubt.current_winner.substring(38)}
+                        <OverlayTrigger key={index}
+                          placement="bottom"
+                          delay={{ show: 150, hide: 400 }}
+                          overlay={insertOverlay()}>
+                          <button className="btn btn-secondary">
+                            Current Winner - {doubt.current_winner.substring(0, 6)}...{doubt.current_winner.substring(36)}
+                          </button>
+                        </OverlayTrigger>
                       </div>
                     </div>
                     <div dangerouslySetInnerHTML={{

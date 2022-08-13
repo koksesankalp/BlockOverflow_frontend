@@ -245,7 +245,10 @@ export const CreateFlow = () => {
             address: postedDoubt.posterAddress,
             quesId: postedDoubt.quesId.toNumber(),
             heading: postedDoubt.heading,
-            description: postedDoubt.description
+            description: postedDoubt.description,
+            current_winner: postedDoubt.current_winner,
+            bounty_amt: postedDoubt.bounty,
+            valid_till: postedDoubt.dueDate
           };
         });
         setAllDoubts(postedDoubtsCleaned);
@@ -373,9 +376,20 @@ export const CreateFlow = () => {
             {/* Displaying all of the doubts posted on the contract */}
             {allDoubts.map((doubt, index) => {
               return (
-                <div className="card mb-3" key={index} style={{ backgroundColor: "transparent", color: "white", borderColor: "#4BB000", borderRadius: "10px" }}>
+                <div className="card mb-3" key={index}
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "white",
+                    borderColor: "#4BB000",
+                    borderRadius: "10px"
+                  }}>
                   <div className="container my-3 mx-2">
-                    <h3><b>{doubt.heading}</b></h3>
+                    <div className="d-flex justify-content-between">
+                      <div><h3><b>{doubt.heading}</b></h3></div>
+                      <div>
+                        Current Winner - {doubt.current_winner.substring(0, 8)}...{doubt.current_winner.substring(38)}
+                      </div>
+                    </div>
                     <div dangerouslySetInnerHTML={{
                       __html: marked.parse(doubt.description),
                     }}></div>

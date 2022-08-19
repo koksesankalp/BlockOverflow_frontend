@@ -47,17 +47,16 @@ export function ShowAnsModal(props) {
                 {props.answerArray.map((answer, index) => {
                     return (
                         <div key={index}>
-                            <span className="totalUpvotes">{answer.upvotes}</span>&nbsp;
-                            <button onClick={() => { upvoteCurrentAnswer(answer.ansId) }} className="upvoteArrow">&#8679;</button>
-                            &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                            <span className="answerBody">Answer {answer.ansId}:-</span>
+                            <button type="button" className="btn btn-primary" onClick={() => { upvoteCurrentAnswer(answer.ansId) }}>
+                                Upvote <span class="badge text-bg-secondary">{answer.upvotes}</span>
+                            </button>
+                            {/* <span className="answerBody">{answer.ansId}:-</span> */}
                             <div className="mark-input"
                                 dangerouslySetInnerHTML={{
                                     __html: marked.parse(answer.answerbody),
                                 }}>
                             </div>
-                            <hr></hr>
-                            <br></br>
+                            <hr />
                         </div>
                     )
                 })}

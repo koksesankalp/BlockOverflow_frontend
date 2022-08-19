@@ -276,7 +276,7 @@ const DoubtInput = (props) => {
             </Row>
             <div className="description">
               <div className="calculation">
-                <p>Bounty flow Rate with Superfluid</p>
+                <p>Bounty flow Rate</p>
                 <p>
                   <b>${flowRateDisplay !== " " ? flowRateDisplay : 0}</b> DAIx/month<br></br>
                   <b>${doubtFlowRateDisplay !== " " ? doubtFlowRateDisplay : 0}</b> DAIx/{doubt_due} day(s)

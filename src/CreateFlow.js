@@ -17,8 +17,6 @@ import abi from "./utils/StreamFlow.json";
 import "./CreateFlow.css";
 const erc20_abi = require('./utils/ERC20_abi.json');
 
-
-
 // This abi is for testing purpose only. Use the StreamFlow ABI when deploying
 // import abi from "./utils/TestFlow.json";
 // let account;
@@ -381,7 +379,6 @@ export const CreateFlow = () => {
                 return (
                   <Tooltip id="tooltip-bottom">
                     <div className="container">
-                      <p>Key: {index}</p>
                       <p>From: {doubt.address.substring(0, 6)}...{doubt.address.substring(36)}</p>
                       <p>Current Winner: {doubt.current_winner.substring(0, 6)}...{doubt.current_winner.substring(36)}</p>
                     </div>
@@ -414,7 +411,9 @@ export const CreateFlow = () => {
                     <div dangerouslySetInnerHTML={{
                       __html: marked.parse(doubt.description),
                     }}></div>
-                    <Button variant="primary" className="me-3 mb-2" onClick={() => handleShow1(doubt.quesId)}>Show Answers</Button>
+                    <Button variant="primary" className="me-3 mb-2" onClick={() => handleShow1(doubt.quesId)}>
+                      Show Answers
+                    </Button>
                     <Button variant="primary" className="mb-2" onClick={() => handleShow2(doubt.quesId)}>Post Answer</Button>
                   </div>
                 </div>

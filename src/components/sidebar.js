@@ -38,7 +38,7 @@ function Slider(props) {
         const { ethereum } = window;
         const provider = new ethers.providers.Web3Provider(ethereum);
         const sf = await Framework.create({
-            networkName: "rinkeby",
+            chainId: 5,
             provider: provider
         });
         const signer = sf.createSigner({ web3Provider: provider });
